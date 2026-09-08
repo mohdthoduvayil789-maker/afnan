@@ -1,5 +1,5 @@
 /* ==========================================================================
-   AFNAN P.C – CINEMATIC 3D PORTFOLIO STYLESHEET
+   AFNAN P.C – CINEMATIC PORTFOLIO STYLESHEET
    ========================================================================== */
 
 :root {
@@ -310,25 +310,13 @@ h1, h2, h3, h4 {
 }
 
 /* ==========================================================================
-   HERO SECTION (WITH 3D WEBGL CANVAS BACKGROUND)
+   HERO SECTION
    ========================================================================== */
 .hero {
   padding-top: 150px;
   padding-bottom: 90px;
   position: relative;
   overflow: hidden;
-  perspective: 1200px;
-}
-
-/* Global Three.js 3D Interactive Canvas (Fixed Full-Page Background) */
-#global3dCanvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 0;
 }
 
 .hero-content {
@@ -338,29 +326,6 @@ h1, h2, h3, h4 {
   grid-template-columns: 1.2fr 0.8fr;
   align-items: center;
   gap: 48px;
-}
-
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  border-radius: var(--radius-full);
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #34d399;
-  margin-bottom: 20px;
-  animation: float3D 6s ease-in-out infinite;
-}
-
-.hero-badge .status-ping {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 10px #10b981;
 }
 
 .hero-title {
@@ -415,95 +380,7 @@ h1, h2, h3, h4 {
 .hero-visual {
   display: flex;
   justify-content: center;
-  perspective: 1000px;
   position: relative;
-}
-
-/* Floating 3D Video Editor Micro-Badges */
-.hero-3d-badge {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 16px;
-  background: rgba(18, 18, 24, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: var(--radius-full);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  z-index: 15;
-  cursor: default;
-  user-select: none;
-  pointer-events: auto;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-}
-
-.hero-3d-badge:hover {
-  transform: scale(1.08) translateY(-4px) !important;
-}
-
-.badge-top-left {
-  top: -12px;
-  left: -15px;
-  border: 1px solid rgba(0, 242, 254, 0.45);
-  box-shadow: 0 10px 25px rgba(0, 242, 254, 0.2);
-  animation: floatSlow 5s ease-in-out infinite;
-}
-
-.badge-bottom-right {
-  bottom: 25px;
-  right: -25px;
-  border: 1px solid rgba(245, 158, 11, 0.45);
-  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.2);
-  animation: floatSlow 6s ease-in-out infinite 1s;
-}
-
-.badge-top-right {
-  top: 60px;
-  right: -30px;
-  border: 1px solid rgba(255, 0, 127, 0.45);
-  box-shadow: 0 10px 25px rgba(255, 0, 127, 0.2);
-  animation: floatSlow 5.5s ease-in-out infinite 2s;
-}
-
-.badge-3d-icon {
-  font-size: 1.25rem;
-  line-height: 1;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
-}
-
-.badge-3d-info {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-
-.badge-3d-title {
-  font-size: 0.8rem;
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-}
-
-.badge-3d-sub {
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: #a1a1aa;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-@keyframes floatSlow {
-  0% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-7px) rotate(1deg); }
-  100% { transform: translateY(0px) rotate(0deg); }
-}
-
-@media (max-width: 768px) {
-  .hero-3d-badge {
-    display: none;
-  }
 }
 
 .creator-card {
@@ -518,11 +395,11 @@ h1, h2, h3, h4 {
   width: 100%;
   max-width: 380px;
   text-align: center;
-  transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-  transform-style: preserve-3d;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .creator-card:hover {
+  transform: translateY(-6px);
   border-color: rgba(239, 68, 68, 0.5);
   box-shadow: 0 25px 50px -10px rgba(239, 68, 68, 0.3);
 }
@@ -535,7 +412,6 @@ h1, h2, h3, h4 {
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 2px solid var(--border-subtle);
-  transform: translateZ(30px);
 }
 
 .avatar-wrapper img {
@@ -547,7 +423,6 @@ h1, h2, h3, h4 {
 .creator-name {
   font-size: 1.4rem;
   margin-bottom: 4px;
-  transform: translateZ(24px);
 }
 
 .creator-specialty {
@@ -557,7 +432,6 @@ h1, h2, h3, h4 {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 16px;
-  transform: translateZ(18px);
 }
 
 .creator-stats {
@@ -566,7 +440,6 @@ h1, h2, h3, h4 {
   gap: 8px;
   padding-top: 16px;
   border-top: 1px solid var(--border-subtle);
-  transform: translateZ(14px);
 }
 
 .stat-item .stat-num {
@@ -582,58 +455,6 @@ h1, h2, h3, h4 {
   margin-top: 2px;
 }
 
-/* ==========================================================================
-   3D PHYSICS TILT & SPECULAR GLARE STYLING
-   ========================================================================== */
-.tilt-3d {
-  transform-style: preserve-3d;
-  transition: transform 0.15s ease-out, box-shadow 0.25s ease;
-  will-change: transform;
-  position: relative;
-}
-
-/* Specular Glare Reflection Layer */
-.glare-3d {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  border-radius: inherit;
-  z-index: 8;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  mix-blend-mode: overlay;
-}
-
-/* 3D Depth Layers for Elements inside Tilt Cards */
-.tilt-3d .aspect-badge {
-  transform: translateZ(28px);
-}
-
-.tilt-3d .expand-card-btn {
-  transform: translateZ(28px);
-}
-
-.tilt-3d .play-circle {
-  transform: translateZ(35px);
-}
-
-.tilt-3d .work-title {
-  transform: translateZ(20px);
-}
-
-.tilt-3d .work-category-tag {
-  transform: translateZ(16px);
-}
-
-/* 3D Floating Animation */
-@keyframes float3D {
-  0% { transform: translateY(0px) rotateZ(0deg); }
-  50% { transform: translateY(-8px) rotateZ(1deg); }
-  100% { transform: translateY(0px) rotateZ(0deg); }
-}
 
 /* ==========================================================================
    STATS BAR
@@ -676,7 +497,6 @@ h1, h2, h3, h4 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  perspective: 1000px;
 }
 
 .service-card {
@@ -695,6 +515,7 @@ h1, h2, h3, h4 {
   transform: translateY(-6px);
   border-color: var(--border-hover);
   background: rgba(28, 28, 36, 0.85);
+  box-shadow: var(--shadow-hover);
 }
 
 .service-icon {
@@ -708,13 +529,11 @@ h1, h2, h3, h4 {
   justify-content: center;
   color: var(--primary);
   margin-bottom: 24px;
-  transform: translateZ(24px);
 }
 
 .service-card h3 {
   font-size: 1.35rem;
   margin-bottom: 12px;
-  transform: translateZ(18px);
 }
 
 .service-card p {
@@ -722,7 +541,6 @@ h1, h2, h3, h4 {
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 20px;
-  transform: translateZ(12px);
 }
 
 .service-points {
@@ -731,7 +549,6 @@ h1, h2, h3, h4 {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  transform: translateZ(15px);
 }
 
 .service-points li {
@@ -748,11 +565,10 @@ h1, h2, h3, h4 {
 }
 
 /* ==========================================================================
-   PORTFOLIO SHOWCASE SECTION (WITH 3D TILT & AUTO-PAUSE)
+   PORTFOLIO SHOWCASE SECTION (INLINE & THEATER PLAYBACK)
    ========================================================================== */
 .portfolio {
   background: transparent;
-  perspective: 1200px;
 }
 
 .filter-container {
@@ -830,6 +646,7 @@ h1, h2, h3, h4 {
 }
 
 .work-card:hover {
+  transform: translateY(-6px);
   border-color: var(--border-hover);
   box-shadow: var(--shadow-hover);
 }
@@ -891,7 +708,6 @@ h1, h2, h3, h4 {
   padding-top: 56.25%; /* 16:9 widescreen */
   background: #000;
   overflow: hidden;
-  transform: translateZ(10px);
 }
 
 .work-card.short-format .thumb-holder {
@@ -964,7 +780,7 @@ h1, h2, h3, h4 {
 }
 
 .work-card:hover .play-circle {
-  transform: scale(1.15) translateZ(35px);
+  transform: scale(1.15);
   background: #ef4444;
 }
 
@@ -1100,13 +916,12 @@ h1, h2, h3, h4 {
 }
 
 /* ==========================================================================
-   TOOLKIT / SKILLS SECTION (WITH 3D HOVER)
+   TOOLKIT / SKILLS SECTION
    ========================================================================== */
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 20px;
-  perspective: 1000px;
 }
 
 .tool-badge-card {
@@ -1118,12 +933,11 @@ h1, h2, h3, h4 {
   padding: 24px 16px;
   text-align: center;
   transition: transform 0.25s cubic-bezier(0.2, 0, 0.2, 1), border-color 0.25s ease, box-shadow 0.25s ease;
-  transform-style: preserve-3d;
 }
 
 .tool-badge-card:hover {
   border-color: var(--primary);
-  transform: translateY(-8px) rotateX(8deg) scale(1.04);
+  transform: translateY(-6px);
   box-shadow: 0 12px 28px -5px rgba(239, 68, 68, 0.25);
 }
 
@@ -1135,20 +949,17 @@ h1, h2, h3, h4 {
   align-items: center;
   justify-content: center;
   font-size: 1.7rem;
-  transform: translateZ(20px);
 }
 
 .tool-name {
   font-weight: 700;
   font-size: 0.95rem;
   margin-bottom: 4px;
-  transform: translateZ(15px);
 }
 
 .tool-role {
   font-size: 0.75rem;
   color: var(--text-muted);
-  transform: translateZ(10px);
 }
 
 /* ==========================================================================
