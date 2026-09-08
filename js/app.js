@@ -236,9 +236,9 @@ async function init() {
   setupEventListeners();
   setupGlobalAutoPauseListener();
   
-  // Initialize Minimal 3D Design
+  // Initialize Global 3D Universe & Tactile Micro-Tilt
   initMinimalCardTilt();
-  initMinimal3DHero();
+  initGlobal3DUniverse();
 }
 
 /**
@@ -288,25 +288,22 @@ function initMinimalCardTilt() {
 
 /**
  * =========================================================================
- * MINIMAL 3D HERO AMBIENT ENGINE (Cinema Keyframe Crystal & Studio Lighting)
+ * GLOBAL 3D CINEMA UNIVERSE (Full-Page Depth & Multi-Section Post-Production Artifacts)
  * =========================================================================
  */
-function initMinimal3DHero() {
-  const canvas = document.getElementById('minimal3dCanvas');
+function initGlobal3DUniverse() {
+  const canvas = document.getElementById('global3dCanvas');
   if (!canvas || typeof THREE === 'undefined') return;
-
-  const heroSection = document.getElementById('home');
-  if (!heroSection) return;
 
   // Scene & Camera
   const scene = new THREE.Scene();
-  const width = heroSection.clientWidth || window.innerWidth;
-  const height = heroSection.clientHeight || window.innerHeight;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
 
-  const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
+  const camera = new THREE.PerspectiveCamera(45, width / height, 1, 3500);
   camera.position.set(0, 0, 420);
 
-  // Renderer (Zero-overhead, high performance)
+  // Renderer
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({
@@ -321,86 +318,290 @@ function initMinimal3DHero() {
   renderer.setSize(width, height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
-  // Studio Lighting (Complementary Cinematic Grading Colors: Crimson, Teal, Amber)
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+  // Dynamic Multi-Color Studio Lighting (Tracks camera as user scrolls)
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
   scene.add(ambientLight);
 
-  const keyLight = new THREE.PointLight(0xef4444, 2.5, 650); // Crimson Key
-  keyLight.position.set(160, 100, 180);
-  scene.add(keyLight);
+  const lightCrimson = new THREE.PointLight(0xef4444, 4.0, 950); // Crimson Key
+  lightCrimson.position.set(160, 100, 200);
+  scene.add(lightCrimson);
 
-  const rimLight = new THREE.PointLight(0x06b6d4, 2.2, 650); // Cyan/Teal Rim
-  rimLight.position.set(-180, -90, 150);
-  scene.add(rimLight);
+  const lightCyan = new THREE.PointLight(0x00f0ff, 3.6, 950); // Electric Cyan Rim
+  lightCyan.position.set(-180, -90, 180);
+  scene.add(lightCyan);
 
-  const amberFill = new THREE.PointLight(0xf59e0b, 1.4, 550); // Amber Fill
-  amberFill.position.set(0, 180, 120);
-  scene.add(amberFill);
+  const lightAmber = new THREE.PointLight(0xffb703, 2.4, 850); // Amber Fill
+  lightAmber.position.set(0, 180, 140);
+  scene.add(lightAmber);
 
-  // 3D Object Group
+  const lightPurple = new THREE.PointLight(0xa855f7, 2.0, 800); // Violet Ambient
+  lightPurple.position.set(-100, 0, 160);
+  scene.add(lightPurple);
+
+  // =========================================================================
+  // SECTION 1: HERO (Y = 0) — Cinema Keyframe Gemstone & Dual Aperture Rings
+  // =========================================================================
   const heroGroup = new THREE.Group();
   scene.add(heroGroup);
 
-  // 1. Central Keyframe Diamond Prism (Video Editor Core)
-  const keyframeGeom = new THREE.IcosahedronGeometry(72, 0);
+  // A. Central Keyframe Diamond Gemstone
+  const keyframeGeom = new THREE.IcosahedronGeometry(95, 0);
   const keyframeMat = new THREE.MeshStandardMaterial({
-    color: 0x111118,
-    metalness: 0.88,
-    roughness: 0.22,
-    flatShading: true
+    color: 0x222638,
+    metalness: 0.75,
+    roughness: 0.25,
+    flatShading: true,
+    emissive: 0x141424,
+    emissiveIntensity: 0.35
   });
   const keyframeMesh = new THREE.Mesh(keyframeGeom, keyframeMat);
   heroGroup.add(keyframeMesh);
 
+  // Inner Pulsing Core
+  const coreGeom = new THREE.OctahedronGeometry(48, 0);
+  const coreMat = new THREE.MeshBasicMaterial({
+    color: 0xff3b5c,
+    wireframe: true
+  });
+  const coreMesh = new THREE.Mesh(coreGeom, coreMat);
+  heroGroup.add(coreMesh);
+
   // Outer Glowing Wireframe Cage
   const wireGeom = new THREE.WireframeGeometry(keyframeGeom);
   const wireMat = new THREE.LineBasicMaterial({
-    color: 0xef4444,
+    color: 0xff3355,
     transparent: true,
-    opacity: 0.65
+    opacity: 0.9
   });
   const wireMesh = new THREE.LineSegments(wireGeom, wireMat);
   heroGroup.add(wireMesh);
 
-  // 2. Orbital Cinema Rings (Aperture / Film Orbit)
+  // B. Dual Glowing Cinema Aperture Rings
   const ringMat1 = new THREE.MeshStandardMaterial({
-    color: 0x222230,
-    metalness: 0.9,
+    color: 0x3d101a,
+    metalness: 0.85,
     roughness: 0.2,
     emissive: 0xef4444,
-    emissiveIntensity: 0.15
+    emissiveIntensity: 0.65
   });
-  const ring1 = new THREE.Mesh(new THREE.TorusGeometry(108, 1.4, 16, 90), ringMat1);
-  ring1.rotation.x = Math.PI / 3;
+  const ring1 = new THREE.Mesh(new THREE.TorusGeometry(168, 2.5, 16, 100), ringMat1);
+  ring1.rotation.x = Math.PI / 3.2;
   heroGroup.add(ring1);
 
   const ringMat2 = new THREE.MeshStandardMaterial({
-    color: 0x181824,
-    metalness: 0.9,
+    color: 0x082530,
+    metalness: 0.85,
     roughness: 0.2,
-    emissive: 0x06b6d4,
-    emissiveIntensity: 0.2
+    emissive: 0x00f0ff,
+    emissiveIntensity: 0.7
   });
-  const ring2 = new THREE.Mesh(new THREE.TorusGeometry(130, 0.9, 16, 90), ringMat2);
-  ring2.rotation.y = -Math.PI / 4;
-  ring2.rotation.x = Math.PI / 6;
+  const ring2 = new THREE.Mesh(new THREE.TorusGeometry(205, 2.0, 16, 100), ringMat2);
+  ring2.rotation.y = -Math.PI / 3.8;
+  ring2.rotation.x = Math.PI / 5;
   heroGroup.add(ring2);
 
-  // 3. Subtle Floating Ambient Dust (45 motes)
-  const particleCount = 45;
+  // C. 4 Orbiting 3D Keyframe Diamonds
+  const kfColors = [0xef4444, 0x00f0ff, 0xffb703, 0xa855f7];
+  const heroKeyframes = [];
+  const kfGeom = new THREE.OctahedronGeometry(12, 0);
+
+  for (let i = 0; i < 4; i++) {
+    const kfMat = new THREE.MeshStandardMaterial({
+      color: kfColors[i],
+      emissive: kfColors[i],
+      emissiveIntensity: 0.7,
+      metalness: 0.9,
+      roughness: 0.1
+    });
+    const kf = new THREE.Mesh(kfGeom, kfMat);
+    heroGroup.add(kf);
+    heroKeyframes.push({
+      mesh: kf,
+      radius: 175 + i * 22,
+      speed: 0.6 + i * 0.25,
+      offsetAngle: (i * Math.PI) / 2
+    });
+  }
+
+  // =========================================================================
+  // SECTION 2: SERVICES (Y = -550) — 3D Three-Way Color Grading Wheels & Prism
+  // =========================================================================
+  const servicesGroup = new THREE.Group();
+  servicesGroup.position.set(0, -550, 0);
+  scene.add(servicesGroup);
+
+  const wheelConfigs = [
+    { x: -160, color: 0x00e5ff, name: 'Lift' },   // Shadow Teal
+    { x: 0,    color: 0xffb703, name: 'Gamma' },  // Midtone Gold
+    { x: 160,  color: 0xf72585, name: 'Gain' }    // Highlight Magenta
+  ];
+  const colorWheels = [];
+
+  wheelConfigs.forEach(cfg => {
+    const wheelGroup = new THREE.Group();
+    wheelGroup.position.set(cfg.x, 0, 0);
+
+    // Glowing Outer Ring
+    const wMat = new THREE.MeshStandardMaterial({
+      color: 0x14141e,
+      emissive: cfg.color,
+      emissiveIntensity: 0.6,
+      metalness: 0.8,
+      roughness: 0.25
+    });
+    const wRing = new THREE.Mesh(new THREE.TorusGeometry(48, 1.8, 16, 60), wMat);
+    wheelGroup.add(wRing);
+
+    // Center Puck
+    const puckMat = new THREE.MeshStandardMaterial({
+      color: cfg.color,
+      emissive: cfg.color,
+      emissiveIntensity: 0.85
+    });
+    const puck = new THREE.Mesh(new THREE.SphereGeometry(6, 16, 16), puckMat);
+    wheelGroup.add(puck);
+
+    servicesGroup.add(wheelGroup);
+    colorWheels.push({ group: wheelGroup, puck, baseAngle: cfg.x });
+  });
+
+  // Optical Dispersion Prism
+  const prismGeom = new THREE.ConeGeometry(36, 52, 3);
+  const prismMat = new THREE.MeshStandardMaterial({
+    color: 0x181a28,
+    emissive: 0x00f0ff,
+    emissiveIntensity: 0.4,
+    metalness: 0.9,
+    roughness: 0.15,
+    wireframe: false
+  });
+  const prismMesh = new THREE.Mesh(prismGeom, prismMat);
+  prismMesh.position.set(0, -80, -30);
+  servicesGroup.add(prismMesh);
+
+  // =========================================================================
+  // SECTION 3: WORKS (Y = -1200) — 3D Aspect Ratio Frames & Keyframes
+  // =========================================================================
+  const worksGroup = new THREE.Group();
+  worksGroup.position.set(0, -1200, 0);
+  scene.add(worksGroup);
+
+  // 16:9 Widescreen Wireframe
+  const frame169Mat = new THREE.MeshStandardMaterial({
+    color: 0x241018,
+    emissive: 0xef4444,
+    emissiveIntensity: 0.6,
+    metalness: 0.8,
+    roughness: 0.2
+  });
+  const frame169 = new THREE.Mesh(new THREE.BoxGeometry(180, 101, 3), frame169Mat);
+  frame169.position.set(-150, 0, -20);
+  worksGroup.add(frame169);
+
+  // 9:16 Vertical Reel Wireframe
+  const frame916Mat = new THREE.MeshStandardMaterial({
+    color: 0x082530,
+    emissive: 0x00f0ff,
+    emissiveIntensity: 0.65,
+    metalness: 0.8,
+    roughness: 0.2
+  });
+  const frame916 = new THREE.Mesh(new THREE.BoxGeometry(85, 151, 3), frame916Mat);
+  frame916.position.set(160, 0, -20);
+  worksGroup.add(frame916);
+
+  // Orbiting crystal between frames
+  const worksDiamondMat = new THREE.MeshStandardMaterial({
+    color: 0xffb703,
+    emissive: 0xffb703,
+    emissiveIntensity: 0.8
+  });
+  const worksDiamond = new THREE.Mesh(new THREE.OctahedronGeometry(18, 0), worksDiamondMat);
+  worksGroup.add(worksDiamond);
+
+  // =========================================================================
+  // SECTION 4: TOOLKIT (Y = -1800) — 3D Soundwave Frequency Equalizer Bars
+  // =========================================================================
+  const toolkitGroup = new THREE.Group();
+  toolkitGroup.position.set(0, -1800, 0);
+  scene.add(toolkitGroup);
+
+  const eqBars = [];
+  const numBars = 9;
+  for (let i = 0; i < numBars; i++) {
+    const isEven = i % 2 === 0;
+    const barMat = new THREE.MeshStandardMaterial({
+      color: isEven ? 0xef4444 : 0x00f0ff,
+      emissive: isEven ? 0xef4444 : 0x00f0ff,
+      emissiveIntensity: 0.65,
+      metalness: 0.85,
+      roughness: 0.2
+    });
+    const bar = new THREE.Mesh(new THREE.BoxGeometry(10, 48, 10), barMat);
+    bar.position.set((i - (numBars - 1) / 2) * 26, 0, 0);
+    toolkitGroup.add(bar);
+    eqBars.push({ bar, offset: i * 0.7 });
+  }
+
+  // Motion Bezier Rings
+  const bezierRing = new THREE.Mesh(
+    new THREE.TorusGeometry(88, 1.8, 16, 70),
+    new THREE.MeshStandardMaterial({ color: 0x181824, emissive: 0xa855f7, emissiveIntensity: 0.5 })
+  );
+  bezierRing.rotation.x = Math.PI / 2.8;
+  toolkitGroup.add(bezierRing);
+
+  // =========================================================================
+  // SECTION 5: CONTACT (Y = -2350) — 3D Camera Aperture Iris Mechanism
+  // =========================================================================
+  const contactGroup = new THREE.Group();
+  contactGroup.position.set(0, -2350, 0);
+  scene.add(contactGroup);
+
+  const irisBlades = [];
+  const numBlades = 6;
+  for (let i = 0; i < numBlades; i++) {
+    const angle = (i / numBlades) * Math.PI * 2;
+    const bladeMat = new THREE.MeshStandardMaterial({
+      color: 0x14141c,
+      emissive: i % 2 === 0 ? 0xef4444 : 0x00f0ff,
+      emissiveIntensity: 0.55,
+      metalness: 0.85,
+      roughness: 0.25
+    });
+    const blade = new THREE.Mesh(new THREE.BoxGeometry(42, 9, 2), bladeMat);
+    blade.position.set(Math.cos(angle) * 45, Math.sin(angle) * 45, 0);
+    blade.rotation.z = angle + Math.PI / 3;
+    contactGroup.add(blade);
+    irisBlades.push({ blade, baseAngle: angle });
+  }
+
+  // Center Beacon Light Core
+  const beaconMat = new THREE.MeshStandardMaterial({
+    color: 0xffb703,
+    emissive: 0xffb703,
+    emissiveIntensity: 0.95
+  });
+  const beaconMesh = new THREE.Mesh(new THREE.SphereGeometry(14, 16, 16), beaconMat);
+  contactGroup.add(beaconMesh);
+
+  // =========================================================================
+  // FULL-PAGE AMBIENT CINEMATIC DUST MOTES (Y = 150 to -2600)
+  // =========================================================================
+  const particleCount = 85;
   const particleGeom = new THREE.BufferGeometry();
   const positions = new Float32Array(particleCount * 3);
   const colors = new Float32Array(particleCount * 3);
   const colorPalette = [
     new THREE.Color(0xef4444), // Crimson
-    new THREE.Color(0x06b6d4), // Teal
-    new THREE.Color(0xf59e0b), // Gold
+    new THREE.Color(0x00f0ff), // Cyan
+    new THREE.Color(0xffb703), // Gold
     new THREE.Color(0xa855f7)  // Purple
   ];
 
   for (let i = 0; i < particleCount; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 550;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 350;
+    positions[i * 3] = (Math.random() - 0.5) * 700;
+    positions[i * 3 + 1] = Math.random() * -2700 + 100; // Spanning whole page!
     positions[i * 3 + 2] = (Math.random() - 0.5) * 350;
 
     const col = colorPalette[i % colorPalette.length];
@@ -413,18 +614,43 @@ function initMinimal3DHero() {
   particleGeom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
   const particleMat = new THREE.PointsMaterial({
-    size: 3.5,
+    size: 4.5,
     vertexColors: true,
     transparent: true,
-    opacity: 0.75
+    opacity: 0.85
   });
   const particles = new THREE.Points(particleGeom, particleMat);
-  heroGroup.add(particles);
+  scene.add(particles);
 
-  // Responsive Positioning
+  // =========================================================================
+  // SCROLL PROGRESS TRACKER (Glide down 3D Universe smoothly)
+  // =========================================================================
+  let targetCameraY = 0;
+  let currentCameraY = 0;
+
+  function updateScrollProgress() {
+    const scrollMax = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const scrollFraction = Math.min(1, Math.max(0, window.scrollY / scrollMax));
+    targetCameraY = -scrollFraction * 2350;
+  }
+  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+  updateScrollProgress();
+
+  // Position Hero 3D cluster around creator card
   function updateLayout() {
-    const isDesktop = window.innerWidth >= 992;
-    heroGroup.position.set(isDesktop ? 220 : 0, isDesktop ? 10 : -10, 0);
+    const visualEl = document.querySelector('.hero-visual') || document.querySelector('.creator-card');
+    if (visualEl) {
+      const cardRect = visualEl.getBoundingClientRect();
+      const cardCenterX = (cardRect.left + cardRect.width / 2) - (window.innerWidth / 2);
+      const vFov = (camera.fov * Math.PI) / 180;
+      const visibleHeight = 2 * Math.tan(vFov / 2) * camera.position.z;
+      const visibleWidth = visibleHeight * (window.innerWidth / window.innerHeight);
+      const worldX = (cardCenterX / window.innerWidth) * visibleWidth;
+      heroGroup.position.set(worldX, 0, -40);
+    } else {
+      const isDesktop = window.innerWidth >= 992;
+      heroGroup.position.set(isDesktop ? 140 : 0, 0, -40);
+    }
   }
   updateLayout();
 
@@ -435,73 +661,110 @@ function initMinimal3DHero() {
   let targetY = 0;
 
   window.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX - window.innerWidth / 2) * 0.0006;
-    mouseY = (e.clientY - window.innerHeight / 2) * 0.0006;
+    mouseX = (e.clientX - window.innerWidth / 2) * 0.0007;
+    mouseY = (e.clientY - window.innerHeight / 2) * 0.0007;
   }, { passive: true });
 
-  // Animation Loop with Visibility Optimization
-  let isVisible = true;
-  let animId = null;
+  // Animation Loop
   const clock = new THREE.Clock();
 
   function animate() {
-    if (!isVisible) return;
-    animId = requestAnimationFrame(animate);
-
+    requestAnimationFrame(animate);
     const elapsedTime = clock.getElapsedTime();
 
     // Smooth lerp mouse tracking
     targetX += (mouseX - targetX) * 0.04;
     targetY += (mouseY - targetY) * 0.04;
 
-    // Gentle slow rotation
-    keyframeMesh.rotation.y = elapsedTime * 0.28 + targetX * 1.5;
-    keyframeMesh.rotation.x = Math.sin(elapsedTime * 0.4) * 0.15 + targetY * 1.2;
+    // Smooth camera scroll descent
+    currentCameraY += (targetCameraY - currentCameraY) * 0.055;
+    camera.position.y = currentCameraY + (-targetY * 30);
+    camera.position.x += (targetX * 35 - camera.position.x) * 0.05;
+    camera.lookAt(new THREE.Vector3(0, currentCameraY, 0));
+
+    // Studio lights follow the camera smoothly down the page
+    lightCrimson.position.y = Math.sin(elapsedTime * 0.6) * 140 + currentCameraY + 90;
+    lightCyan.position.y = -Math.cos(elapsedTime * 0.7) * 140 + currentCameraY - 70;
+    lightAmber.position.y = Math.cos(elapsedTime * 0.5) * 120 + currentCameraY;
+    lightPurple.position.y = Math.sin(elapsedTime * 0.4) * 100 + currentCameraY;
+
+    // 1. Hero Animations
+    keyframeMesh.rotation.y = elapsedTime * 0.35 + targetX * 1.5;
+    keyframeMesh.rotation.x = Math.sin(elapsedTime * 0.4) * 0.18 + targetY * 1.2;
     wireMesh.rotation.y = keyframeMesh.rotation.y;
     wireMesh.rotation.x = keyframeMesh.rotation.x;
 
-    // Rings orbital motion
-    ring1.rotation.z = elapsedTime * 0.35;
+    const corePulse = 1 + Math.sin(elapsedTime * 2.5) * 0.15;
+    coreMesh.scale.set(corePulse, corePulse, corePulse);
+
+    ring1.rotation.z = elapsedTime * 0.38;
     ring1.rotation.y = targetX * 0.8;
-    ring2.rotation.z = -elapsedTime * 0.28;
-    ring2.rotation.x = Math.PI / 6 + targetY * 0.8;
+    ring2.rotation.z = -elapsedTime * 0.32;
+    ring2.rotation.x = Math.PI / 5 + targetY * 0.8;
 
-    // Subtle drift on particles
-    particles.rotation.y = elapsedTime * 0.03;
+    heroKeyframes.forEach(item => {
+      const angle = elapsedTime * item.speed + item.offsetAngle;
+      item.mesh.position.set(
+        Math.cos(angle) * item.radius,
+        Math.sin(angle) * (item.radius * 0.55),
+        Math.sin(angle) * 60
+      );
+      item.mesh.rotation.x = elapsedTime * 1.5;
+      item.mesh.rotation.y = elapsedTime * 2.0;
+    });
 
-    // Orbiting key light
-    keyLight.position.x = Math.cos(elapsedTime * 0.5) * 160 + heroGroup.position.x;
-    keyLight.position.y = Math.sin(elapsedTime * 0.6) * 110 + heroGroup.position.y;
+    // 2. Services Animations (Color Wheels)
+    colorWheels.forEach((cw, idx) => {
+      cw.group.rotation.z = elapsedTime * (0.2 + idx * 0.08);
+      cw.puck.position.x = Math.sin(elapsedTime * (1.6 + idx * 0.3)) * 18;
+      cw.puck.position.y = Math.cos(elapsedTime * (1.3 + idx * 0.4)) * 18;
+    });
+    prismMesh.rotation.x = elapsedTime * 0.35;
+    prismMesh.rotation.y = elapsedTime * 0.45;
+
+    // 3. Works Animations (Aspect Ratio Frames)
+    frame169.rotation.y = elapsedTime * 0.25;
+    frame169.rotation.x = Math.sin(elapsedTime * 0.5) * 0.1;
+    frame916.rotation.y = -elapsedTime * 0.28;
+    frame916.rotation.z = Math.cos(elapsedTime * 0.4) * 0.08;
+    worksDiamond.rotation.y = elapsedTime * 0.8;
+    worksDiamond.rotation.x = elapsedTime * 0.6;
+    worksDiamond.position.y = Math.sin(elapsedTime * 1.8) * 12;
+
+    // 4. Toolkit Animations (Soundwave Beat Fluctuations)
+    eqBars.forEach((item, idx) => {
+      const beat = Math.abs(Math.sin(elapsedTime * 4.2 + item.offset)) * 2.2 +
+                   Math.abs(Math.cos(elapsedTime * 2.0 + idx * 0.4)) * 0.8 + 0.3;
+      item.bar.scale.y = beat;
+      item.bar.position.y = (beat * 24) / 2 - 24;
+    });
+    bezierRing.rotation.z = elapsedTime * 0.35;
+
+    // 5. Contact Animations (Aperture Iris Breathing)
+    irisBlades.forEach((item, idx) => {
+      const breathe = Math.sin(elapsedTime * 2.0) * 0.22;
+      item.blade.rotation.z = item.baseAngle + Math.PI / 3 + breathe;
+    });
+    const beaconPulse = 1 + Math.sin(elapsedTime * 2.2) * 0.12;
+    beaconMesh.scale.set(beaconPulse, beaconPulse, beaconPulse);
+
+    // Dust motes drift
+    particles.rotation.y = elapsedTime * 0.02;
 
     renderer.render(scene, camera);
   }
 
-  // IntersectionObserver: Pause when hero is scrolled out of view (0% CPU/GPU overhead)
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        isVisible = entry.isIntersecting;
-        if (isVisible) {
-          clock.start();
-          animate();
-        } else if (animId) {
-          cancelAnimationFrame(animId);
-        }
-      });
-    }, { threshold: 0.05 });
-    observer.observe(heroSection);
-  } else {
-    animate();
-  }
+  animate();
 
   // Resize Handler
   window.addEventListener('resize', () => {
-    const newWidth = heroSection.clientWidth || window.innerWidth;
-    const newHeight = heroSection.clientHeight || window.innerHeight;
+    const newWidth = window.innerWidth;
+    const newHeight = window.innerHeight;
     camera.aspect = newWidth / newHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(newWidth, newHeight);
     updateLayout();
+    updateScrollProgress();
   });
 }
 
