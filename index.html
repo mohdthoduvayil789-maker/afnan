@@ -31,6 +31,9 @@
 </head>
 <body>
 
+  <!-- Global 3D WebGL Cinema Canvas -->
+  <canvas id="global3dCanvas"></canvas>
+
   <!-- Navigation Bar -->
   <header class="navbar">
     <div class="container">
@@ -59,11 +62,8 @@
     </div>
   </header>
 
-  <!-- Hero Section (With Three.js 3D WebGL Canvas) -->
+  <!-- Hero Section -->
   <section class="hero" id="home">
-    <!-- Interactive Three.js 3D Canvas Background -->
-    <canvas id="hero3dCanvas"></canvas>
-
     <div class="container">
       <div class="hero-content">
         <div class="hero-text">
@@ -129,6 +129,31 @@
                 <div class="stat-num">100%</div>
                 <div class="stat-lbl">Dedication</div>
               </div>
+            </div>
+          </div>
+
+          <!-- Interactive 3D Video Editor Micro-Badges -->
+          <div class="hero-3d-badge badge-top-left tilt-3d">
+            <span class="badge-3d-icon">🎬</span>
+            <div class="badge-3d-info">
+              <span class="badge-3d-title">4K 60FPS</span>
+              <span class="badge-3d-sub">Cinema RAW</span>
+            </div>
+          </div>
+
+          <div class="hero-3d-badge badge-bottom-right tilt-3d">
+            <span class="badge-3d-icon">🎨</span>
+            <div class="badge-3d-info">
+              <span class="badge-3d-title">DaVinci Grade</span>
+              <span class="badge-3d-sub">Teal & Orange</span>
+            </div>
+          </div>
+
+          <div class="hero-3d-badge badge-top-right tilt-3d">
+            <span class="badge-3d-icon">⚡</span>
+            <div class="badge-3d-info">
+              <span class="badge-3d-title">After Effects</span>
+              <span class="badge-3d-sub">Keyframe FX</span>
             </div>
           </div>
         </div>
