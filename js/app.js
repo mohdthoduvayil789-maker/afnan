@@ -82,18 +82,7 @@ const FALLBACK_WORKS = [
     "description": "Modern Instagram reel showcasing developers in action with swift camera transitions and overlay graphics.",
     "tags": ["Reels", "Transitions", "Event Cut"]
   },
-  {
-    "id": "4zoGQV5MFn8",
-    "title": "Let AI Create - Visual Exploration",
-    "category": "AI Video Production",
-    "type": "short",
-    "client": "Afnan P.C",
-    "aspect": "9:16",
-    "thumbnail": "https://i.ytimg.com/vi/4zoGQV5MFn8/hq2.jpg",
-    "youtubeUrl": "https://youtube.com/shorts/4zoGQV5MFn8",
-    "description": "Cutting-edge AI-generated video sequence utilizing Midjourney, Runway Gen-2 and neural sound synthesis.",
-    "tags": ["AI Video", "Runway Gen-2", "Generative Art"]
-  },
+
   {
     "id": "tOOEV2Oe-4Y",
     "title": "Early Bird Commercial Ad Reel",
@@ -1093,7 +1082,7 @@ function renderWorks(filter) {
     if (filter === 'long') return item.type === 'long';
     if (filter === 'short') return item.type === 'short';
     if (filter === 'promo') return item.category.includes('Promo') || item.category.includes('Commercial');
-    if (filter === 'motion') return item.category.includes('Motion') || item.category.includes('AI');
+    if (filter === 'motion') return item.category.includes('Motion');
     return true;
   });
 

@@ -1,6 +1,6 @@
 # Afnan P.C – Portfolio Website
 
-A cinematic, standalone portfolio website for **Afnan P.C** (Video Editor • Motion Graphics • AI Video Production).
+A cinematic, standalone 3D portfolio website for **Afnan P.C** (Video Editor • Motion Graphics • Colorist & Sound Designer).
 
 Rebuilt from [afnanpc.framer.website](https://afnanpc.framer.website/) as a clean, portable codebase with no Framer badges or subscription limits.
 
