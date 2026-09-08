@@ -322,120 +322,86 @@ function initMinimal3DHero() {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
   // Studio Lighting (Complementary Cinematic Grading Colors: Crimson, Teal, Amber)
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
   scene.add(ambientLight);
 
-  const keyLight = new THREE.PointLight(0xef4444, 3.8, 800); // Crimson Key
-  keyLight.position.set(160, 120, 200);
+  const keyLight = new THREE.PointLight(0xef4444, 2.5, 650); // Crimson Key
+  keyLight.position.set(160, 100, 180);
   scene.add(keyLight);
 
-  const rimLight = new THREE.PointLight(0x00f0ff, 3.5, 800); // Electric Cyan/Teal Rim
-  rimLight.position.set(-180, -100, 160);
+  const rimLight = new THREE.PointLight(0x06b6d4, 2.2, 650); // Cyan/Teal Rim
+  rimLight.position.set(-180, -90, 150);
   scene.add(rimLight);
 
-  const amberFill = new THREE.PointLight(0xffb703, 2.2, 700); // Amber Fill
-  amberFill.position.set(0, 200, 140);
+  const amberFill = new THREE.PointLight(0xf59e0b, 1.4, 550); // Amber Fill
+  amberFill.position.set(0, 180, 120);
   scene.add(amberFill);
 
   // 3D Object Group
   const heroGroup = new THREE.Group();
   scene.add(heroGroup);
 
-  // 1. Central Keyframe Diamond Gemstone (Video Editor Core)
-  const keyframeGeom = new THREE.IcosahedronGeometry(95, 0);
+  // 1. Central Keyframe Diamond Prism (Video Editor Core)
+  const keyframeGeom = new THREE.IcosahedronGeometry(72, 0);
   const keyframeMat = new THREE.MeshStandardMaterial({
-    color: 0x222638,
-    metalness: 0.72,
-    roughness: 0.28,
-    flatShading: true,
-    emissive: 0x141424,
-    emissiveIntensity: 0.3
+    color: 0x111118,
+    metalness: 0.88,
+    roughness: 0.22,
+    flatShading: true
   });
   const keyframeMesh = new THREE.Mesh(keyframeGeom, keyframeMat);
   heroGroup.add(keyframeMesh);
 
-  // Inner Pulsing Core
-  const coreGeom = new THREE.OctahedronGeometry(48, 0);
-  const coreMat = new THREE.MeshBasicMaterial({
-    color: 0xff3b5c,
-    wireframe: true
-  });
-  const coreMesh = new THREE.Mesh(coreGeom, coreMat);
-  heroGroup.add(coreMesh);
-
   // Outer Glowing Wireframe Cage
   const wireGeom = new THREE.WireframeGeometry(keyframeGeom);
   const wireMat = new THREE.LineBasicMaterial({
-    color: 0xff3355,
+    color: 0xef4444,
     transparent: true,
-    opacity: 0.9
+    opacity: 0.65
   });
   const wireMesh = new THREE.LineSegments(wireGeom, wireMat);
   heroGroup.add(wireMesh);
 
-  // 2. Glowing Cinema Aperture Rings (Encircling the visual framing)
+  // 2. Orbital Cinema Rings (Aperture / Film Orbit)
   const ringMat1 = new THREE.MeshStandardMaterial({
-    color: 0x3d101a,
-    metalness: 0.85,
+    color: 0x222230,
+    metalness: 0.9,
     roughness: 0.2,
     emissive: 0xef4444,
-    emissiveIntensity: 0.6
+    emissiveIntensity: 0.15
   });
-  const ring1 = new THREE.Mesh(new THREE.TorusGeometry(168, 2.5, 16, 100), ringMat1);
-  ring1.rotation.x = Math.PI / 3.2;
+  const ring1 = new THREE.Mesh(new THREE.TorusGeometry(108, 1.4, 16, 90), ringMat1);
+  ring1.rotation.x = Math.PI / 3;
   heroGroup.add(ring1);
 
   const ringMat2 = new THREE.MeshStandardMaterial({
-    color: 0x082530,
-    metalness: 0.85,
+    color: 0x181824,
+    metalness: 0.9,
     roughness: 0.2,
-    emissive: 0x00f0ff,
-    emissiveIntensity: 0.65
+    emissive: 0x06b6d4,
+    emissiveIntensity: 0.2
   });
-  const ring2 = new THREE.Mesh(new THREE.TorusGeometry(205, 2.0, 16, 100), ringMat2);
-  ring2.rotation.y = -Math.PI / 3.8;
-  ring2.rotation.x = Math.PI / 5;
+  const ring2 = new THREE.Mesh(new THREE.TorusGeometry(130, 0.9, 16, 90), ringMat2);
+  ring2.rotation.y = -Math.PI / 4;
+  ring2.rotation.x = Math.PI / 6;
   heroGroup.add(ring2);
 
-  // 3. Orbiting 3D Keyframe Crystals (4 Cinematic Timeline Accent Diamonds)
-  const kfColors = [0xef4444, 0x00f0ff, 0xffb703, 0xa855f7];
-  const orbitingKeyframes = [];
-  const kfGeom = new THREE.OctahedronGeometry(12, 0);
-
-  for (let i = 0; i < 4; i++) {
-    const kfMat = new THREE.MeshStandardMaterial({
-      color: kfColors[i],
-      emissive: kfColors[i],
-      emissiveIntensity: 0.7,
-      metalness: 0.9,
-      roughness: 0.1
-    });
-    const kf = new THREE.Mesh(kfGeom, kfMat);
-    heroGroup.add(kf);
-    orbitingKeyframes.push({
-      mesh: kf,
-      radius: 175 + i * 22,
-      speed: 0.6 + i * 0.25,
-      offsetAngle: (i * Math.PI) / 2
-    });
-  }
-
-  // 4. Subtle Floating Ambient Dust (50 motes)
-  const particleCount = 50;
+  // 3. Subtle Floating Ambient Dust (45 motes)
+  const particleCount = 45;
   const particleGeom = new THREE.BufferGeometry();
   const positions = new Float32Array(particleCount * 3);
   const colors = new Float32Array(particleCount * 3);
   const colorPalette = [
     new THREE.Color(0xef4444), // Crimson
-    new THREE.Color(0x00f0ff), // Cyan
-    new THREE.Color(0xffb703), // Gold
+    new THREE.Color(0x06b6d4), // Teal
+    new THREE.Color(0xf59e0b), // Gold
     new THREE.Color(0xa855f7)  // Purple
   ];
 
   for (let i = 0; i < particleCount; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 650;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 450;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 400;
+    positions[i * 3] = (Math.random() - 0.5) * 550;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 350;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 350;
 
     const col = colorPalette[i % colorPalette.length];
     colors[i * 3] = col.r;
@@ -447,38 +413,18 @@ function initMinimal3DHero() {
   particleGeom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
   const particleMat = new THREE.PointsMaterial({
-    size: 4.5,
+    size: 3.5,
     vertexColors: true,
     transparent: true,
-    opacity: 0.85
+    opacity: 0.75
   });
   const particles = new THREE.Points(particleGeom, particleMat);
   heroGroup.add(particles);
 
-  // Position 3D Cinema hub directly behind & framing the Creator Card
+  // Responsive Positioning
   function updateLayout() {
-    const heroRect = heroSection.getBoundingClientRect();
-    const visualEl = document.querySelector('.hero-visual') || document.querySelector('.creator-card');
-    
-    if (visualEl && heroRect.width > 0 && heroRect.height > 0) {
-      const cardRect = visualEl.getBoundingClientRect();
-      const cardCenterX = (cardRect.left + cardRect.width / 2) - (heroRect.left + heroRect.width / 2);
-      const cardCenterY = -((cardRect.top + cardRect.height / 2) - (heroRect.top + heroRect.height / 2));
-
-      const vFov = (camera.fov * Math.PI) / 180;
-      const visibleHeight = 2 * Math.tan(vFov / 2) * (camera.position.z - (-40));
-      const currentWidth = heroSection.clientWidth || window.innerWidth;
-      const currentHeight = heroSection.clientHeight || window.innerHeight;
-      const visibleWidth = visibleHeight * (currentWidth / currentHeight);
-
-      const worldX = (cardCenterX / heroRect.width) * visibleWidth;
-      const worldY = (cardCenterY / heroRect.height) * visibleHeight;
-
-      heroGroup.position.set(worldX, worldY, -40);
-    } else {
-      const isDesktop = window.innerWidth >= 992;
-      heroGroup.position.set(isDesktop ? 140 : 0, 0, -40);
-    }
+    const isDesktop = window.innerWidth >= 992;
+    heroGroup.position.set(isDesktop ? 220 : 0, isDesktop ? 10 : -10, 0);
   }
   updateLayout();
 
@@ -489,8 +435,8 @@ function initMinimal3DHero() {
   let targetY = 0;
 
   window.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX - window.innerWidth / 2) * 0.0007;
-    mouseY = (e.clientY - window.innerHeight / 2) * 0.0007;
+    mouseX = (e.clientX - window.innerWidth / 2) * 0.0006;
+    mouseY = (e.clientY - window.innerHeight / 2) * 0.0006;
   }, { passive: true });
 
   // Animation Loop with Visibility Optimization
@@ -508,42 +454,24 @@ function initMinimal3DHero() {
     targetX += (mouseX - targetX) * 0.04;
     targetY += (mouseY - targetY) * 0.04;
 
-    // Gentle slow rotation of central keyframe crystal
-    keyframeMesh.rotation.y = elapsedTime * 0.35 + targetX * 1.6;
-    keyframeMesh.rotation.x = Math.sin(elapsedTime * 0.4) * 0.18 + targetY * 1.3;
+    // Gentle slow rotation
+    keyframeMesh.rotation.y = elapsedTime * 0.28 + targetX * 1.5;
+    keyframeMesh.rotation.x = Math.sin(elapsedTime * 0.4) * 0.15 + targetY * 1.2;
     wireMesh.rotation.y = keyframeMesh.rotation.y;
     wireMesh.rotation.x = keyframeMesh.rotation.x;
 
-    // Pulsing inner core
-    const corePulse = 1 + Math.sin(elapsedTime * 2.5) * 0.15;
-    coreMesh.scale.set(corePulse, corePulse, corePulse);
-    coreMesh.rotation.x = -elapsedTime * 0.8;
-    coreMesh.rotation.z = elapsedTime * 0.6;
-
     // Rings orbital motion
-    ring1.rotation.z = elapsedTime * 0.38;
-    ring1.rotation.y = targetX * 0.9;
-    ring2.rotation.z = -elapsedTime * 0.32;
-    ring2.rotation.x = Math.PI / 5 + targetY * 0.9;
-
-    // Orbiting Keyframe Crystals
-    orbitingKeyframes.forEach((item) => {
-      const angle = elapsedTime * item.speed + item.offsetAngle;
-      item.mesh.position.set(
-        Math.cos(angle) * item.radius,
-        Math.sin(angle) * (item.radius * 0.55),
-        Math.sin(angle) * 60
-      );
-      item.mesh.rotation.x = elapsedTime * 1.5;
-      item.mesh.rotation.y = elapsedTime * 2.0;
-    });
+    ring1.rotation.z = elapsedTime * 0.35;
+    ring1.rotation.y = targetX * 0.8;
+    ring2.rotation.z = -elapsedTime * 0.28;
+    ring2.rotation.x = Math.PI / 6 + targetY * 0.8;
 
     // Subtle drift on particles
-    particles.rotation.y = elapsedTime * 0.035;
+    particles.rotation.y = elapsedTime * 0.03;
 
     // Orbiting key light
-    keyLight.position.x = Math.cos(elapsedTime * 0.5) * 180 + heroGroup.position.x;
-    keyLight.position.y = Math.sin(elapsedTime * 0.6) * 120 + heroGroup.position.y;
+    keyLight.position.x = Math.cos(elapsedTime * 0.5) * 160 + heroGroup.position.x;
+    keyLight.position.y = Math.sin(elapsedTime * 0.6) * 110 + heroGroup.position.y;
 
     renderer.render(scene, camera);
   }
