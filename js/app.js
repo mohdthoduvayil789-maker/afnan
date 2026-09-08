@@ -229,13 +229,280 @@ async function init() {
       }
     }
   } catch (err) {
-    console.info('Using fallback dataset (18 projects)');
+    console.info('Using fallback dataset (16 projects)');
   }
 
   renderWorks(currentFilter);
   setupEventListeners();
   setupGlobalAutoPauseListener();
   
+  // Initialize Minimal 3D Design
+  initMinimalCardTilt();
+  initMinimal3DHero();
+}
+
+/**
+ * =========================================================================
+ * MINIMAL 3D TACTILE MICRO-TILT & SHEEN
+ * =========================================================================
+ */
+function initMinimalCardTilt() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  
+  const cards = document.querySelectorAll('.minimal-tilt');
+  cards.forEach(card => {
+    // Add specular sheen overlay if not present
+    let sheen = card.querySelector('.minimal-sheen');
+    if (!sheen) {
+      sheen = document.createElement('div');
+      sheen.className = 'minimal-sheen';
+      card.appendChild(sheen);
+    }
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      // Subtle, tactile micro-tilt (max ±4.5 degrees)
+      const rotateX = ((y - centerY) / centerY) * -4.5;
+      const rotateY = ((x - centerX) / centerX) * 4.5;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px)`;
+
+      // Subtle dynamic sheen
+      const sheenX = (x / rect.width) * 100;
+      const sheenY = (y / rect.height) * 100;
+      sheen.style.background = `radial-gradient(circle at ${sheenX}% ${sheenY}%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 65%)`;
+      sheen.style.opacity = '1';
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+      if (sheen) sheen.style.opacity = '0';
+    });
+  });
+}
+
+/**
+ * =========================================================================
+ * MINIMAL 3D HERO AMBIENT ENGINE (Cinema Keyframe Crystal & Studio Lighting)
+ * =========================================================================
+ */
+function initMinimal3DHero() {
+  const canvas = document.getElementById('minimal3dCanvas');
+  if (!canvas || typeof THREE === 'undefined') return;
+
+  const heroSection = document.getElementById('home');
+  if (!heroSection) return;
+
+  // Scene & Camera
+  const scene = new THREE.Scene();
+  const width = heroSection.clientWidth || window.innerWidth;
+  const height = heroSection.clientHeight || window.innerHeight;
+
+  const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000);
+  camera.position.set(0, 0, 420);
+
+  // Renderer (Zero-overhead, high performance)
+  let renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true,
+      powerPreference: 'high-performance'
+    });
+  } catch (e) {
+    return;
+  }
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  // Studio Lighting (Complementary Cinematic Grading Colors: Crimson, Teal, Amber)
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+  scene.add(ambientLight);
+
+  const keyLight = new THREE.PointLight(0xef4444, 2.5, 650); // Crimson Key
+  keyLight.position.set(160, 100, 180);
+  scene.add(keyLight);
+
+  const rimLight = new THREE.PointLight(0x06b6d4, 2.2, 650); // Cyan/Teal Rim
+  rimLight.position.set(-180, -90, 150);
+  scene.add(rimLight);
+
+  const amberFill = new THREE.PointLight(0xf59e0b, 1.4, 550); // Amber Fill
+  amberFill.position.set(0, 180, 120);
+  scene.add(amberFill);
+
+  // 3D Object Group
+  const heroGroup = new THREE.Group();
+  scene.add(heroGroup);
+
+  // 1. Central Keyframe Diamond Prism (Video Editor Core)
+  const keyframeGeom = new THREE.IcosahedronGeometry(72, 0);
+  const keyframeMat = new THREE.MeshStandardMaterial({
+    color: 0x111118,
+    metalness: 0.88,
+    roughness: 0.22,
+    flatShading: true
+  });
+  const keyframeMesh = new THREE.Mesh(keyframeGeom, keyframeMat);
+  heroGroup.add(keyframeMesh);
+
+  // Outer Glowing Wireframe Cage
+  const wireGeom = new THREE.WireframeGeometry(keyframeGeom);
+  const wireMat = new THREE.LineBasicMaterial({
+    color: 0xef4444,
+    transparent: true,
+    opacity: 0.65
+  });
+  const wireMesh = new THREE.LineSegments(wireGeom, wireMat);
+  heroGroup.add(wireMesh);
+
+  // 2. Orbital Cinema Rings (Aperture / Film Orbit)
+  const ringMat1 = new THREE.MeshStandardMaterial({
+    color: 0x222230,
+    metalness: 0.9,
+    roughness: 0.2,
+    emissive: 0xef4444,
+    emissiveIntensity: 0.15
+  });
+  const ring1 = new THREE.Mesh(new THREE.TorusGeometry(108, 1.4, 16, 90), ringMat1);
+  ring1.rotation.x = Math.PI / 3;
+  heroGroup.add(ring1);
+
+  const ringMat2 = new THREE.MeshStandardMaterial({
+    color: 0x181824,
+    metalness: 0.9,
+    roughness: 0.2,
+    emissive: 0x06b6d4,
+    emissiveIntensity: 0.2
+  });
+  const ring2 = new THREE.Mesh(new THREE.TorusGeometry(130, 0.9, 16, 90), ringMat2);
+  ring2.rotation.y = -Math.PI / 4;
+  ring2.rotation.x = Math.PI / 6;
+  heroGroup.add(ring2);
+
+  // 3. Subtle Floating Ambient Dust (45 motes)
+  const particleCount = 45;
+  const particleGeom = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+  const colors = new Float32Array(particleCount * 3);
+  const colorPalette = [
+    new THREE.Color(0xef4444), // Crimson
+    new THREE.Color(0x06b6d4), // Teal
+    new THREE.Color(0xf59e0b), // Gold
+    new THREE.Color(0xa855f7)  // Purple
+  ];
+
+  for (let i = 0; i < particleCount; i++) {
+    positions[i * 3] = (Math.random() - 0.5) * 550;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 350;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 350;
+
+    const col = colorPalette[i % colorPalette.length];
+    colors[i * 3] = col.r;
+    colors[i * 3 + 1] = col.g;
+    colors[i * 3 + 2] = col.b;
+  }
+
+  particleGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  particleGeom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+  const particleMat = new THREE.PointsMaterial({
+    size: 3.5,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.75
+  });
+  const particles = new THREE.Points(particleGeom, particleMat);
+  heroGroup.add(particles);
+
+  // Responsive Positioning
+  function updateLayout() {
+    const isDesktop = window.innerWidth >= 992;
+    heroGroup.position.set(isDesktop ? 220 : 0, isDesktop ? 10 : -10, 0);
+  }
+  updateLayout();
+
+  // Mouse Parallax
+  let mouseX = 0;
+  let mouseY = 0;
+  let targetX = 0;
+  let targetY = 0;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX - window.innerWidth / 2) * 0.0006;
+    mouseY = (e.clientY - window.innerHeight / 2) * 0.0006;
+  }, { passive: true });
+
+  // Animation Loop with Visibility Optimization
+  let isVisible = true;
+  let animId = null;
+  const clock = new THREE.Clock();
+
+  function animate() {
+    if (!isVisible) return;
+    animId = requestAnimationFrame(animate);
+
+    const elapsedTime = clock.getElapsedTime();
+
+    // Smooth lerp mouse tracking
+    targetX += (mouseX - targetX) * 0.04;
+    targetY += (mouseY - targetY) * 0.04;
+
+    // Gentle slow rotation
+    keyframeMesh.rotation.y = elapsedTime * 0.28 + targetX * 1.5;
+    keyframeMesh.rotation.x = Math.sin(elapsedTime * 0.4) * 0.15 + targetY * 1.2;
+    wireMesh.rotation.y = keyframeMesh.rotation.y;
+    wireMesh.rotation.x = keyframeMesh.rotation.x;
+
+    // Rings orbital motion
+    ring1.rotation.z = elapsedTime * 0.35;
+    ring1.rotation.y = targetX * 0.8;
+    ring2.rotation.z = -elapsedTime * 0.28;
+    ring2.rotation.x = Math.PI / 6 + targetY * 0.8;
+
+    // Subtle drift on particles
+    particles.rotation.y = elapsedTime * 0.03;
+
+    // Orbiting key light
+    keyLight.position.x = Math.cos(elapsedTime * 0.5) * 160 + heroGroup.position.x;
+    keyLight.position.y = Math.sin(elapsedTime * 0.6) * 110 + heroGroup.position.y;
+
+    renderer.render(scene, camera);
+  }
+
+  // IntersectionObserver: Pause when hero is scrolled out of view (0% CPU/GPU overhead)
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) {
+          clock.start();
+          animate();
+        } else if (animId) {
+          cancelAnimationFrame(animId);
+        }
+      });
+    }, { threshold: 0.05 });
+    observer.observe(heroSection);
+  } else {
+    animate();
+  }
+
+  // Resize Handler
+  window.addEventListener('resize', () => {
+    const newWidth = heroSection.clientWidth || window.innerWidth;
+    const newHeight = heroSection.clientHeight || window.innerHeight;
+    camera.aspect = newWidth / newHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(newWidth, newHeight);
+    updateLayout();
+  });
 }
 
 /**
