@@ -3,24 +3,29 @@
    ========================================================================== */
 
 :root {
-  --bg-main: #0a0a0c;
-  --bg-surface: #121216;
-  --bg-card: #18181f;
-  --bg-card-hover: #1f1f28;
-  --border-subtle: #272732;
-  --border-hover: #3e3e50;
+  /* Dark Deep Emerald & Pine Backgrounds */
+  --bg-main: #04140e;
+  --bg-surface: #081e15;
+  --bg-card: rgba(10, 36, 26, 0.78);
+  --bg-card-hover: rgba(15, 48, 35, 0.92);
+  --border-subtle: #143d2c;
+  --border-hover: #266b4d;
   
-  --primary: #ef4444;
-  --primary-hover: #dc2626;
-  --primary-glow: rgba(239, 68, 68, 0.4);
-  --primary-soft: rgba(239, 68, 68, 0.12);
+  /* Aurora Radiant Gold / Electric Yellow Primary Accent */
+  --primary: #f5c518;
+  --primary-hover: #ffd700;
+  --primary-glow: rgba(245, 197, 24, 0.45);
+  --primary-soft: rgba(245, 197, 24, 0.14);
   
-  --accent-gold: #f59e0b;
+  /* Vibrant Accents */
+  --accent-gold: #f5c518;
   --accent-green: #10b981;
+  --accent-lime: #84cc16;
   
-  --text-main: #f4f4f7;
-  --text-muted: #9ca3af;
-  --text-dim: #6b7280;
+  /* Text Contrast */
+  --text-main: #f8fafc;
+  --text-muted: #94b2a3;
+  --text-dim: #5c7e6e;
   
   --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -30,8 +35,8 @@
   --radius-lg: 22px;
   --radius-full: 9999px;
   
-  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
-  --shadow-hover: 0 20px 40px -12px rgba(239, 68, 68, 0.25);
+  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+  --shadow-hover: 0 20px 40px -12px rgba(245, 197, 24, 0.25);
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -50,6 +55,11 @@ html {
 
 body {
   background-color: var(--bg-main);
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 90% -10%, rgba(245, 197, 24, 0.12), transparent),
+    radial-gradient(ellipse 70% 50% at 10% 25%, rgba(16, 185, 129, 0.15), transparent),
+    radial-gradient(ellipse 80% 60% at 85% 85%, rgba(245, 197, 24, 0.08), transparent);
+  background-attachment: fixed;
   color: var(--text-main);
   font-family: var(--font-body);
   line-height: 1.6;
@@ -65,7 +75,7 @@ body {
   background: var(--bg-main);
 }
 ::-webkit-scrollbar-thumb {
-  background: #272732;
+  background: var(--border-subtle);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -93,13 +103,13 @@ h1, h2, h3, h4 {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #ffffff 30%, #a1a1aa 100%);
+  background: linear-gradient(135deg, #ffffff 30%, #94b2a3 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.text-gradient-red {
-  background: linear-gradient(135deg, #f87171 0%, #ef4444 50%, #dc2626 100%);
+.text-gradient-red, .text-gradient-gold {
+  background: linear-gradient(135deg, #fef08a 0%, #f5c518 50%, #eab308 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -116,13 +126,13 @@ h1, h2, h3, h4 {
   gap: 8px;
   padding: 6px 14px;
   background: var(--primary-soft);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  border: 1px solid rgba(245, 197, 24, 0.3);
   border-radius: var(--radius-full);
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #f87171;
+  color: var(--primary);
   margin-bottom: 16px;
 }
 
@@ -202,7 +212,7 @@ h1, h2, h3, h4 {
 
 .brand-tag {
   font-size: 0.72rem;
-  color: #f87171;
+  color: var(--primary);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -266,12 +276,14 @@ h1, h2, h3, h4 {
 
 .btn-primary {
   background: var(--primary);
-  color: #ffffff;
+  color: #04140e;
+  font-weight: 800;
   box-shadow: 0 4px 18px var(--primary-glow);
 }
 
 .btn-primary:hover {
   background: var(--primary-hover);
+  color: #04140e;
   box-shadow: 0 8px 24px var(--primary-glow);
   transform: translateY(-2px);
 }
@@ -337,7 +349,7 @@ h1, h2, h3, h4 {
 .hero-role {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #f87171;
+  color: var(--primary);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 20px;
@@ -385,7 +397,7 @@ h1, h2, h3, h4 {
 
 .creator-card {
   position: relative;
-  background: rgba(18, 18, 22, 0.85);
+  background: rgba(10, 36, 26, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-subtle);
@@ -400,8 +412,8 @@ h1, h2, h3, h4 {
 
 .creator-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(239, 68, 68, 0.5);
-  box-shadow: 0 25px 50px -10px rgba(239, 68, 68, 0.3);
+  border-color: rgba(245, 197, 24, 0.5);
+  box-shadow: 0 25px 50px -10px rgba(245, 197, 24, 0.3);
 }
 
 .avatar-wrapper {
@@ -500,7 +512,7 @@ h1, h2, h3, h4 {
 }
 
 .service-card {
-  background: rgba(18, 18, 22, 0.72);
+  background: rgba(10, 36, 26, 0.75);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-subtle);
@@ -514,7 +526,7 @@ h1, h2, h3, h4 {
 .service-card:hover {
   transform: translateY(-6px);
   border-color: var(--border-hover);
-  background: rgba(28, 28, 36, 0.85);
+  background: rgba(15, 48, 35, 0.9);
   box-shadow: var(--shadow-hover);
 }
 
@@ -523,7 +535,7 @@ h1, h2, h3, h4 {
   height: 58px;
   border-radius: var(--radius-sm);
   background: var(--primary-soft);
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  border: 1px solid rgba(245, 197, 24, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -599,7 +611,8 @@ h1, h2, h3, h4 {
 .filter-btn.active {
   background: var(--primary);
   border-color: var(--primary);
-  color: #ffffff;
+  color: #04140e;
+  font-weight: 700;
   box-shadow: 0 4px 16px var(--primary-glow);
 }
 
@@ -608,7 +621,7 @@ h1, h2, h3, h4 {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background: rgba(24, 24, 31, 0.7);
+  background: rgba(10, 36, 26, 0.75);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-full);
   padding: 8px 20px;
@@ -633,7 +646,7 @@ h1, h2, h3, h4 {
 }
 
 .work-card {
-  background: rgba(24, 24, 31, 0.75);
+  background: rgba(10, 36, 26, 0.75);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-subtle);
@@ -654,7 +667,7 @@ h1, h2, h3, h4 {
 /* Active Playing Card Highlight */
 .work-card.is-playing {
   border-color: var(--primary);
-  box-shadow: 0 0 28px rgba(239, 68, 68, 0.5);
+  box-shadow: 0 0 28px rgba(245, 197, 24, 0.45);
 }
 
 .work-card.is-playing .playing-indicator-pill {
@@ -667,7 +680,7 @@ h1, h2, h3, h4 {
   gap: 8px;
   background: var(--primary-soft);
   border: 1px solid var(--primary);
-  color: #f87171;
+  color: var(--primary);
   padding: 3px 10px;
   border-radius: var(--radius-full);
   font-size: 0.75rem;
@@ -770,7 +783,7 @@ h1, h2, h3, h4 {
 .play-circle {
   width: 56px;
   height: 56px;
-  background: rgba(239, 68, 68, 0.9);
+  background: rgba(245, 197, 24, 0.92);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -781,13 +794,13 @@ h1, h2, h3, h4 {
 
 .work-card:hover .play-circle {
   transform: scale(1.15);
-  background: #ef4444;
+  background: #ffd700;
 }
 
 .play-circle svg {
   width: 22px;
   height: 22px;
-  fill: #ffffff;
+  fill: #04140e;
   margin-left: 3px;
 }
 
@@ -795,9 +808,9 @@ h1, h2, h3, h4 {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: rgba(10, 10, 12, 0.85);
+  background: rgba(4, 20, 14, 0.85);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(245, 197, 24, 0.25);
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 0.72rem;
@@ -811,9 +824,9 @@ h1, h2, h3, h4 {
   position: absolute;
   top: 12px;
   left: 12px;
-  background: rgba(10, 10, 12, 0.85);
+  background: rgba(4, 20, 14, 0.85);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(245, 197, 24, 0.25);
   padding: 5px 12px;
   border-radius: 6px;
   font-size: 0.75rem;
@@ -827,7 +840,7 @@ h1, h2, h3, h4 {
 .expand-card-btn:hover {
   background: var(--primary);
   border-color: var(--primary);
-  color: #fff;
+  color: #04140e;
 }
 
 .work-info {
@@ -891,7 +904,7 @@ h1, h2, h3, h4 {
   border: none;
   font-size: 0.82rem;
   font-weight: 700;
-  color: #f87171;
+  color: var(--primary);
   cursor: pointer;
   transition: var(--transition-fast);
   padding: 0;
@@ -925,7 +938,7 @@ h1, h2, h3, h4 {
 }
 
 .tool-badge-card {
-  background: rgba(18, 18, 22, 0.72);
+  background: rgba(10, 36, 26, 0.75);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-subtle);
@@ -938,7 +951,7 @@ h1, h2, h3, h4 {
 .tool-badge-card:hover {
   border-color: var(--primary);
   transform: translateY(-6px);
-  box-shadow: 0 12px 28px -5px rgba(239, 68, 68, 0.25);
+  box-shadow: 0 12px 28px -5px rgba(245, 197, 24, 0.25);
 }
 
 .tool-icon-wrap {
@@ -966,7 +979,7 @@ h1, h2, h3, h4 {
    CONTACT SECTION
    ========================================================================== */
 .contact-section {
-  background: radial-gradient(circle at 50% 100%, rgba(28, 20, 23, 0.5) 0%, rgba(10, 10, 12, 0.3) 70%);
+  background: radial-gradient(circle at 50% 100%, rgba(10, 36, 26, 0.8) 0%, rgba(4, 20, 14, 0.4) 70%);
 }
 
 .contact-layout {
@@ -982,7 +995,7 @@ h1, h2, h3, h4 {
 }
 
 .contact-card-box {
-  background: rgba(18, 18, 22, 0.72);
+  background: rgba(10, 36, 26, 0.75);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-subtle);
@@ -998,7 +1011,7 @@ h1, h2, h3, h4 {
 
 .contact-card-box:hover {
   border-color: var(--primary);
-  background: rgba(28, 28, 36, 0.85);
+  background: rgba(15, 48, 35, 0.9);
   transform: translateX(4px);
 }
 
@@ -1029,7 +1042,7 @@ h1, h2, h3, h4 {
 }
 
 .inquiry-form-card {
-  background: rgba(18, 18, 22, 0.72);
+  background: rgba(10, 36, 26, 0.75);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--border-subtle);
@@ -1122,7 +1135,7 @@ textarea.form-control {
   align-items: center;
   justify-content: space-between;
   padding: 16px 22px;
-  background: #141418;
+  background: var(--bg-surface);
   border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -1177,7 +1190,7 @@ textarea.form-control {
    FOOTER
    ========================================================================== */
 footer {
-  background: rgba(7, 7, 9, 0.75);
+  background: rgba(4, 20, 14, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid var(--border-subtle);
