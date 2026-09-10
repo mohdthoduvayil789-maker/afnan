@@ -17,7 +17,7 @@ const FALLBACK_WORKS = [
     "title": "UFUQ Event Promo",
     "category": "Commercial & Promos",
     "type": "long",
-    "client": "Afnan Portfolio",
+    "client": "Afnan P.C Portfolio",
     "aspect": "16:9",
     "thumbnail": "https://i.ytimg.com/vi/pZK6zT61dG4/hqdefault.jpg",
     "youtubeUrl": "https://youtu.be/pZK6zT61dG4",
@@ -41,7 +41,7 @@ const FALLBACK_WORKS = [
     "title": "Slide Dynamic Presentation",
     "category": "Motion Graphics",
     "type": "long",
-    "client": "Afnan Portfolio",
+    "client": "Afnan P.C Portfolio",
     "aspect": "16:9",
     "thumbnail": "https://i.ytimg.com/vi/d0a3c7AYMDA/hqdefault.jpg",
     "youtubeUrl": "https://youtu.be/d0a3c7AYMDA",
@@ -65,7 +65,7 @@ const FALLBACK_WORKS = [
     "title": "Hackathon Glimpses Aftermovie",
     "category": "Commercial & Promos",
     "type": "short",
-    "client": "Afnan Portfolio",
+    "client": "Afnan P.C Portfolio",
     "aspect": "9:16",
     "thumbnail": "https://i.ytimg.com/vi/6yok8-93vYI/hq2.jpg",
     "youtubeUrl": "https://youtube.com/shorts/6yok8-93vYI",
@@ -77,7 +77,7 @@ const FALLBACK_WORKS = [
     "title": "Tech Hackathon Recap Reel",
     "category": "Social Media Reels",
     "type": "short",
-    "client": "Afnan Portfolio",
+    "client": "Afnan P.C Portfolio",
     "aspect": "9:16",
     "thumbnail": "https://i.ytimg.com/vi/OvUMdtjHCpc/hq2.jpg",
     "youtubeUrl": "https://youtube.com/shorts/OvUMdtjHCpc",
@@ -101,7 +101,7 @@ const FALLBACK_WORKS = [
     "title": "EID Motion Greeting Poster",
     "category": "Motion Graphics",
     "type": "short",
-    "client": "Afnan Portfolio",
+    "client": "Afnan P.C Portfolio",
     "aspect": "9:16",
     "thumbnail": "https://i.ytimg.com/vi/O6Qzk6Uom4Y/hq2.jpg",
     "youtubeUrl": "https://youtube.com/shorts/O6Qzk6Uom4Y",
@@ -113,7 +113,7 @@ const FALLBACK_WORKS = [
     "title": "Al Meezan Conference Trailer",
     "category": "Commercial & Promos",
     "type": "short",
-    "client": "Afnan Portfolio",
+    "client": "Afnan P.C Portfolio",
     "aspect": "9:16",
     "thumbnail": "https://i.ytimg.com/vi/Q1ksPGvIkwk/hq2.jpg",
     "youtubeUrl": "https://youtube.com/shorts/Q1ksPGvIkwk",
@@ -125,7 +125,7 @@ const FALLBACK_WORKS = [
     "title": "Musical Rhythm & Color Grade Cut",
     "category": "Video Editing",
     "type": "short",
-    "client": "Afnan Portfolio",
+    "client": "Afnan P.C Portfolio",
     "aspect": "9:16",
     "thumbnail": "https://i.ytimg.com/vi/HDQpvI8yVA8/hq2.jpg",
     "youtubeUrl": "https://youtube.com/shorts/HDQpvI8yVA8",
@@ -137,7 +137,7 @@ const FALLBACK_WORKS = [
     "title": "NS0 Visual Sequence",
     "category": "Social Media Reels",
     "type": "short",
-    "client": "Afnan Portfolio",
+    "client": "Afnan P.C Portfolio",
     "aspect": "9:16",
     "thumbnail": "https://i.ytimg.com/vi/8ggbu9UhwUU/hq2.jpg",
     "youtubeUrl": "https://youtube.com/shorts/8ggbu9UhwUU",
@@ -149,7 +149,7 @@ const FALLBACK_WORKS = [
     "title": "BS01 Brand Showcase",
     "category": "Social Media Reels",
     "type": "short",
-    "client": "Afnan Portfolio",
+    "client": "Afnan P.C Portfolio",
     "aspect": "9:16",
     "thumbnail": "https://i.ytimg.com/vi/U39q44F3uis/hq2.jpg",
     "youtubeUrl": "https://youtube.com/shorts/U39q44F3uis",
@@ -161,7 +161,7 @@ const FALLBACK_WORKS = [
     "title": "Campaign Out 2 Motion Cut",
     "category": "Commercial & Promos",
     "type": "short",
-    "client": "Afnan Portfolio",
+    "client": "Afnan P.C Portfolio",
     "aspect": "9:16",
     "thumbnail": "https://i.ytimg.com/vi/Z60TkGgf2D4/hq2.jpg",
     "youtubeUrl": "https://youtube.com/shorts/Z60TkGgf2D4",
@@ -173,7 +173,7 @@ const FALLBACK_WORKS = [
     "title": "Video02 Campaign Delivery",
     "category": "Commercial & Promos",
     "type": "short",
-    "client": "Afnan Portfolio",
+    "client": "Afnan P.C Portfolio",
     "aspect": "9:16",
     "thumbnail": "https://i.ytimg.com/vi/LuWFLoJvI8E/hq2.jpg",
     "youtubeUrl": "https://youtube.com/shorts/LuWFLoJvI8E",
@@ -185,7 +185,7 @@ const FALLBACK_WORKS = [
     "title": "Manha Brand Final Reel",
     "category": "Commercial & Promos",
     "type": "short",
-    "client": "Afnan Portfolio",
+    "client": "Afnan P.C Portfolio",
     "aspect": "9:16",
     "thumbnail": "https://i.ytimg.com/vi/6mULTVZr04g/hq2.jpg",
     "youtubeUrl": "https://youtube.com/shorts/6mULTVZr04g",
@@ -505,7 +505,7 @@ function setupInquiryLabPage() {
     });
 
     const brief = [
-      `PROJECT CONFIGURATION // AFNAN PORTFOLIO STUDIO`,
+      `PROJECT CONFIGURATION // AFNAN P.C PORTFOLIO STUDIO`,
       `Client / Brand: ${clientName}`,
       `Deliverable: ${selectedFormat}`,
       `Timeline: ${selectedSpeed}`,
@@ -597,7 +597,7 @@ window.openTheater = function(videoId, title, aspect, client, youtubeUrl) {
     theaterAspectTag.textContent = aspect === '9:16' ? '9:16 REEL / SHORT' : '16:9 CINEMA';
   }
   if (theaterClientInfo) {
-    theaterClientInfo.textContent = `Client: ${client || 'Afnan Portfolio'}`;
+    theaterClientInfo.textContent = `Client: ${client || 'Afnan P.C Portfolio'}`;
   }
   if (theaterYtLink) {
     theaterYtLink.href = youtubeUrl || `https://youtu.be/${videoId}`;
