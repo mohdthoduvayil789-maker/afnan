@@ -1,6 +1,6 @@
-# Afnan P.C – Cinematic Creative Portfolio
+# Afnan Portfolio – Cinematic Creative Portfolio
 
-An award-winning inspired, 3-page interactive portfolio website for **Afnan P.C** (Video Editor • Motion Graphics • Colorist & Sound Designer).
+An award-winning inspired, 3-page interactive portfolio website for **Afnan Portfolio** (Video Editor • Motion Graphics • Colorist & Sound Designer).
 
 Inspired by Raphael Segerman's Awwwards-recognized website, featuring 3D perspective Back Mode transitions, 4-stage post-production pipeline breakdown, and an interactive project inquiry lab.
 
