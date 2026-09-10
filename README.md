@@ -1,31 +1,30 @@
-# Afnan P.C – Portfolio Website
+# Afnan P.C – Cinematic Creative Portfolio
 
-A cinematic, standalone portfolio website for **Afnan P.C** (Video Editor • Motion Graphics • Colorist & Sound Designer).
+An award-winning inspired, 3-page interactive portfolio website for **Afnan P.C** (Video Editor • Motion Graphics • Colorist & Sound Designer).
 
-Rebuilt from [afnanpc.framer.website](https://afnanpc.framer.website/) as a clean, portable codebase with no Framer badges or subscription limits.
+Inspired by Raphael Segerman's Awwwards-recognized website, featuring 3D perspective Back Mode transitions, 4-stage post-production pipeline breakdown, and an interactive project inquiry lab.
 
 ---
 
-## 🚀 Quick Start
+## 🌟 3-Page Architecture
 
-### 1. View Locally
-Simply double-click `index.html` to open it in your browser (Chrome, Edge, Firefox, Safari). No build tools, Node.js, or server required!
-
-### 2. File Structure
 ```text
 afnan-pc-portfolio/
 │
-├── index.html            # Main semantic webpage with navigation, hero, services, and footer
+├── index.html            # Works & 3D Back Mode Video Matrix (16 curated works)
+├── info.html             # Creative Philosophy, 4-Stage Pipeline & Toolkit
+├── contact.html          # Interactive Project Inquiry Lab & Live Studio Clock
+├── vercel.json           # Vercel deployment & clean routing configuration
 ├── README.md             # Project documentation
 │
 ├── css/
-│   └── style.css         # Dark cinematic styling, custom animations, responsive layouts
+│   └── style.css         # Dark cosmic palette (#00031f), Syne typography, 3D flips, animations
 │
 ├── js/
-│   └── app.js            # Video modal logic, category filtering, WhatsApp inquiry handler
+│   └── app.js            # Circular SVG loader, fluid magnetic cursor, 3D flip, modal, inquiry lab
 │
 ├── data/
-│   └── works.json        # Structured JSON dataset containing all 16 video projects
+│   └── works.json        # 16 curated video projects (YouTube 16:9 & 9:16 vertical reels)
 │
 └── assets/
     └── profile.png       # High-resolution profile avatar of Afnan P.C
@@ -33,46 +32,43 @@ afnan-pc-portfolio/
 
 ---
 
-## 🎬 Adding or Updating Works
+## 🚀 Key Features
 
-All video projects are stored in `data/works.json`. To add a new work, simply append a new object:
-
-```json
-{
-  "id": "YOUR_YOUTUBE_VIDEO_ID",
-  "title": "Project Title",
-  "category": "Commercial & Promos",
-  "type": "long",
-  "client": "Client Name",
-  "aspect": "16:9",
-  "thumbnail": "https://i.ytimg.com/vi/YOUR_YOUTUBE_VIDEO_ID/hqdefault.jpg",
-  "youtubeUrl": "https://youtu.be/YOUR_YOUTUBE_VIDEO_ID",
-  "description": "Short description of the edit, pacing, and visual effects.",
-  "tags": ["Premiere Pro", "Color Grade"]
-}
-```
-
-* For vertical videos (Reels/Shorts), set `"aspect": "9:16"` and `"type": "short"`. The modal player will automatically switch to vertical phone format.
-* For standard horizontal videos, set `"aspect": "16:9"` and `"type": "long"`.
-
----
-
-## 🌐 Free Hosting Options
-
-You can deploy this website live for free in under 2 minutes:
-
-1. **GitHub Pages**:
-   - Push this folder to a GitHub repository.
-   - Go to `Settings` -> `Pages` -> choose `main` branch root.
-   - Live URL: `https://<your-username>.github.io/<repo-name>/`
-2. **Vercel / Netlify**:
-   - Drag and drop the `afnan-pc-portfolio` folder directly into [Netlify Drop](https://app.netlify.com/drop) or [Vercel](https://vercel.com).
-3. **Custom Domain**:
-   - Point your custom domain (e.g. `afnanpc.com`) in DNS settings.
+1. **3D Back Mode Video Matrix (`index.html`)**:
+   - Editorial Front Mode with interactive desktop live project index and real-time hover previews.
+   - Smooth 3D cube perspective flip into Back Mode featuring 16 project cards with category filters and instant video theater playback (16:9 & 9:16 vertical shorts).
+2. **Post-Production Pipeline (`info.html`)**:
+   - Interactive 4-stage pipeline:
+     - `01 // Ingest & Narrative Pacing` (Premiere Pro)
+     - `02 // Motion Graphics & Visual Alchemy` (After Effects)
+     - `03 // Foley, Sonic Textures & Mix` (Audition)
+     - `04 // DaVinci Color Finishing & Master Delivery` (DaVinci Resolve)
+3. **Interactive Inquiry Lab (`contact.html`)**:
+   - Scope configurator (Deliverables, turnaround timelines, add-ons).
+   - Real-time dynamic project brief generator.
+   - Direct WhatsApp / Email dispatchers.
+   - Live `Asia/Kolkata` (UTC+5:30) studio clock.
+4. **Universal Enhancements**:
+   - Circular SVG mask loader (0% → 100%).
+   - Fluid magnetic physics cursor with contextual action labels (`VIEW`, `PLAY`, `FLIP`, `COPY`, `LAB`).
+   - Ambient deep-space canvas particle mesh.
 
 ---
 
-## 📞 Contact Details Configured
+## 🌐 Deploy to GitHub Pages / Vercel
+
+### GitHub Pages:
+1. Go to repository **Settings** > **Pages**.
+2. Under **Build and deployment**, select **Deploy from a branch**.
+3. Choose branch `main` and folder `/ (root)`.
+4. Click **Save**. The website will be live at: `https://mohdthoduvayil789-maker.github.io/afnan/`
+
+### Vercel:
+1. Import repository `mohdthoduvayil789-maker/afnan` on [Vercel](https://vercel.com).
+2. Click **Deploy**. Vercel will automatically configure clean URLs via `vercel.json`.
+
+---
+
+## 📞 Contact
 * **WhatsApp**: `+91 9037747079`
 * **Email**: `afnanpc3@gmail.com`
-* **Original Framer Site**: [afnanpc.framer.website](https://afnanpc.framer.website/)

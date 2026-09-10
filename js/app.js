@@ -1,13 +1,16 @@
 /**
- * AFNAN P.C – CINEMATIC VIDEO PORTFOLIO ENGINE
- * Features:
- * - Single Video Playback Guarantee (Auto-pause all other videos)
- * - Inline Card Playback + Cinematic Modal Theater Mode
- * - Category filtering & WhatsApp inquiry handler
- * - Ultra-fast responsive performance
+ * AFNAN P.C — MULTI-PAGE CREATIVE ENGINE
+ * - Universal SVG Circular Loader
+ * - 3D Front/Back Mode Transition Engine (Home)
+ * - Desktop Project Index with Live Hover Previews
+ * - Fluid Magnetic Custom Cursor with Contextual States
+ * - Ambient Deep Space Canvas
+ * - Interactive Project Inquiry Lab & WhatsApp Generator (Contact)
+ * - Live Asia/Kolkata Studio Clock
+ * - Responsive 16:9 & 9:16 Theater Video Modal
  */
 
-// Embedded fallback data
+// Fallback dataset of Afnan P.C's 16 video projects
 const FALLBACK_WORKS = [
   {
     "id": "pZK6zT61dG4",
@@ -81,7 +84,6 @@ const FALLBACK_WORKS = [
     "description": "Modern Instagram reel showcasing developers in action with swift camera transitions and overlay graphics.",
     "tags": ["Reels", "Transitions", "Event Cut"]
   },
-
   {
     "id": "tOOEV2Oe-4Y",
     "title": "Early Bird Commercial Ad Reel",
@@ -205,20 +207,42 @@ const FALLBACK_WORKS = [
 ];
 
 let allWorks = FALLBACK_WORKS;
-let currentFilter = 'all';
-let currentActivePlayerId = null;
+let currentFeaturedIndex = 0;
+let currentMatrixFilter = 'all';
+let isBackMode = false;
 
-// DOM Elements
-const grid = document.getElementById('portfolioGrid');
-const filterButtons = document.querySelectorAll('.filter-btn');
-const modal = document.getElementById('videoModal');
-const modalBox = document.getElementById('modalBox');
-const modalIframe = document.getElementById('modalIframe');
-const modalVideoTitle = document.getElementById('modalVideoTitle');
-const modalCloseBtn = document.getElementById('modalCloseBtn');
-const contactForm = document.getElementById('contactForm');
+// Global Elements
+const body = document.body;
+const loaderOverlay = document.getElementById('loaderOverlay');
+const loaderPercent = document.getElementById('loaderPercent');
+const loaderMaskCircle = document.getElementById('loaderMaskCircle');
 
-// Initialize Application
+const copyEmailBtn = document.getElementById('copyEmailBtn');
+const footerEmailBtn = document.getElementById('footerEmailBtn');
+const copyToast = document.getElementById('copyToast');
+
+const customCursor = document.getElementById('customCursor');
+const cursorCircle = customCursor ? customCursor.querySelector('.cursor-circle') : null;
+const cursorDot = customCursor ? customCursor.querySelector('.cursor-dot') : null;
+const cursorText = document.getElementById('cursorText');
+
+// Theater Modal Elements
+const theaterModal = document.getElementById('theaterModal');
+const theaterBackdrop = document.getElementById('theaterBackdrop');
+const theaterWindow = document.getElementById('theaterWindow');
+const theaterCloseBtn = document.getElementById('theaterCloseBtn');
+const theaterIframe = document.getElementById('theaterIframe');
+const theaterTitle = document.getElementById('theaterTitle');
+const theaterAspectTag = document.getElementById('theaterAspectTag');
+const theaterYtLink = document.getElementById('theaterYtLink');
+const theaterWaBtn = document.getElementById('theaterWaBtn');
+const theaterClientInfo = document.getElementById('theaterClientInfo');
+
+/**
+ * =========================================================================
+ * 1. APP INITIALIZATION & LOADER
+ * =========================================================================
+ */
 async function init() {
   try {
     const res = await fetch('data/works.json');
@@ -228,265 +252,541 @@ async function init() {
         allWorks = data;
       }
     }
-  } catch (err) {
-    console.info('Using fallback dataset (18 projects)');
+  } catch (e) {}
+
+  // Global Systems
+  setupCursor();
+  setupAmbientCanvas();
+  setupGlobalListeners();
+  runLoaderAnimation();
+
+  // Page 1 (Home) Specific Setup
+  if (document.getElementById('faceFront')) {
+    setupHomePage();
   }
 
-  renderWorks(currentFilter);
-  setupEventListeners();
-  setupGlobalAutoPauseListener();
-  
+  // Page 3 (Contact & Lab) Specific Setup
+  if (document.getElementById('deliverableChips')) {
+    setupInquiryLabPage();
+  }
 }
 
-/**
- * =========================================================================
- * 1. SINGLE PLAYBACK MANAGER (Auto-Pause all other videos)
- * =========================================================================
- */
-function pauseAllOtherVideos(exceptId) {
-  currentActivePlayerId = exceptId;
+function runLoaderAnimation() {
+  let progress = 0;
+  const duration = 1000;
+  const startTime = performance.now();
 
-  // Pause other iframes
-  document.querySelectorAll('iframe').forEach(iframe => {
-    if (iframe.id !== exceptId) {
-      try {
-        iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-      } catch (e) {}
+  function updateLoader(currentTime) {
+    const elapsed = currentTime - startTime;
+    progress = Math.min(100, Math.floor((elapsed / duration) * 100));
+
+    if (loaderPercent) loaderPercent.textContent = progress;
+
+    if (loaderMaskCircle) {
+      const scale = progress / 100;
+      loaderMaskCircle.style.transform = `scale(${Math.max(0.01, scale)})`;
     }
-  });
 
-  // Pause modal if active video is inline
-  if (exceptId !== 'modalIframe' && modal && modal.classList.contains('active')) {
-    try {
-      modalIframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-    } catch (e) {}
-  }
-
-  // Update Visual Card Styles
-  document.querySelectorAll('.work-card').forEach(card => {
-    const cardIframe = card.querySelector('iframe');
-    if (cardIframe && cardIframe.id === exceptId) {
-      card.classList.add('is-playing');
+    if (progress < 100) {
+      requestAnimationFrame(updateLoader);
     } else {
-      card.classList.remove('is-playing');
+      setTimeout(() => {
+        document.documentElement.classList.remove('is-loading');
+        document.documentElement.classList.add('is-loaded');
+      }, 150);
     }
-  });
-}
+  }
 
-function setupGlobalAutoPauseListener() {
-  window.addEventListener('message', (event) => {
-    try {
-      if (typeof event.data !== 'string') return;
-      const data = JSON.parse(event.data);
-
-      const isPlaying = 
-        (data.event === 'onStateChange' && data.info === 1) ||
-        (data.event === 'infoDelivery' && data.info && data.info.playerState === 1);
-
-      if (isPlaying) {
-        document.querySelectorAll('iframe').forEach(iframe => {
-          if (iframe.contentWindow === event.source) {
-            pauseAllOtherVideos(iframe.id);
-          }
-        });
-      }
-    } catch (err) {}
-  });
+  requestAnimationFrame(updateLoader);
 }
 
 /**
  * =========================================================================
- * 2. RENDER PORTFOLIO GRID
+ * 2. HOME PAGE ENGINE (3D Front/Back Modes & Index)
  * =========================================================================
  */
-function renderWorks(filter) {
-  if (!grid) return;
-  grid.innerHTML = '';
+function setupHomePage() {
+  const modeToggleBtn = document.getElementById('modeToggleBtn');
+  const modeToggleBtnBack = document.getElementById('modeToggleBtnBack');
+  const backReturnBtn = document.getElementById('backReturnBtn');
+  const heroExploreBtn = document.getElementById('heroExploreBtn');
+  const featuredCard = document.getElementById('featuredCard');
+  const filterGroup = document.getElementById('filterGroup');
+
+  updateFeaturedCard(0);
+  renderIndexList();
+  renderMatrixGrid('all');
+
+  function setBackMode(active) {
+    isBackMode = active;
+    if (isBackMode) {
+      body.classList.remove('mode-front');
+      body.classList.add('mode-back');
+      if (modeToggleBtn) modeToggleBtn.classList.add('active-back');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      body.classList.remove('mode-back');
+      body.classList.add('mode-front');
+      if (modeToggleBtn) modeToggleBtn.classList.remove('active-back');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  if (modeToggleBtn) modeToggleBtn.addEventListener('click', () => setBackMode(!isBackMode));
+  if (modeToggleBtnBack) modeToggleBtnBack.addEventListener('click', () => setBackMode(false));
+  if (backReturnBtn) backReturnBtn.addEventListener('click', () => setBackMode(false));
+  if (heroExploreBtn) heroExploreBtn.addEventListener('click', () => setBackMode(true));
+
+  // Auto-flip if URL has #matrix
+  if (window.location.hash === '#matrix') {
+    setBackMode(true);
+  }
+
+  if (featuredCard) {
+    featuredCard.addEventListener('click', () => {
+      const item = allWorks[currentFeaturedIndex];
+      if (item) openTheater(item.id, item.title, item.aspect, item.client, item.youtubeUrl);
+    });
+  }
+
+  if (filterGroup) {
+    filterGroup.querySelectorAll('.back-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterGroup.querySelectorAll('.back-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.getAttribute('data-filter') || 'all';
+        renderMatrixGrid(filter);
+      });
+    });
+  }
+}
+
+function updateFeaturedCard(index) {
+  if (!allWorks[index]) return;
+  currentFeaturedIndex = index;
+  const item = allWorks[index];
+
+  const featuredImg = document.getElementById('featuredImg');
+  const featuredTitle = document.getElementById('featuredTitle');
+  const featuredDesc = document.getElementById('featuredDesc');
+  const featuredCategory = document.getElementById('featuredCategory');
+  const featuredAspectBadge = document.getElementById('featuredAspectBadge');
+
+  if (featuredImg) featuredImg.src = item.thumbnail;
+  if (featuredTitle) featuredTitle.textContent = item.title;
+  if (featuredDesc) featuredDesc.textContent = item.description;
+  if (featuredCategory) featuredCategory.textContent = item.category;
+  if (featuredAspectBadge) {
+    featuredAspectBadge.textContent = item.aspect === '9:16' ? '9:16 REEL' : '16:9 CINEMA';
+  }
+}
+
+function renderIndexList() {
+  const indexList = document.getElementById('indexList');
+  const indexPreviewBox = document.getElementById('indexPreviewBox');
+  const indexPreviewImg = document.getElementById('indexPreviewImg');
+  const indexPreviewBadge = document.getElementById('indexPreviewBadge');
+  const indexPreviewCaption = document.getElementById('indexPreviewCaption');
+  if (!indexList) return;
+
+  indexList.innerHTML = '';
+  allWorks.forEach((item, index) => {
+    const li = document.createElement('li');
+    const num = (index + 1).toString().padStart(2, '0');
+    
+    const a = document.createElement('a');
+    a.className = `index-item-link ${index === currentFeaturedIndex ? 'active' : ''}`;
+    a.setAttribute('data-cursor', 'VIEW');
+    a.innerHTML = `<span class="index-item-num">${num}</span> <span>${escapeHtml(item.title)}</span>`;
+
+    a.addEventListener('mouseenter', () => {
+      updateFeaturedCard(index);
+      if (indexPreviewBox && indexPreviewImg) {
+        indexPreviewImg.src = item.thumbnail;
+        if (indexPreviewBadge) indexPreviewBadge.textContent = item.aspect;
+        if (indexPreviewCaption) indexPreviewCaption.textContent = item.title;
+        indexPreviewBox.classList.add('is-visible');
+      }
+      document.querySelectorAll('.index-item-link').forEach(el => el.classList.remove('active'));
+      a.classList.add('active');
+    });
+
+    a.addEventListener('mouseleave', () => {
+      if (indexPreviewBox) indexPreviewBox.classList.remove('is-visible');
+    });
+
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      openTheater(item.id, item.title, item.aspect, item.client, item.youtubeUrl);
+    });
+
+    li.appendChild(a);
+    indexList.appendChild(li);
+  });
+}
+
+function renderMatrixGrid(filter) {
+  const matrixGrid = document.getElementById('matrixGrid');
+  if (!matrixGrid) return;
+  matrixGrid.innerHTML = '';
 
   const filtered = allWorks.filter(item => {
     if (filter === 'all') return true;
     if (filter === 'long') return item.type === 'long';
     if (filter === 'short') return item.type === 'short';
-    if (filter === 'promo') return item.category.includes('Promo') || item.category.includes('Commercial');
+    if (filter === 'promo') return item.category.includes('Promo') || item.category.includes('Commercial') || item.category.includes('Trailer');
     if (filter === 'motion') return item.category.includes('Motion');
     return true;
   });
 
-  filtered.forEach((work, index) => {
+  filtered.forEach(item => {
+    const isShort = item.type === 'short';
     const card = document.createElement('article');
-    const isShort = work.type === 'short';
-    const cardPlayerId = `inline-player-${work.id}-${index}`;
-    card.className = `work-card ${isShort ? 'short-format' : ''}`;
-    card.id = `card-${work.id}-${index}`;
+    card.className = `matrix-card ${isShort ? 'format-short' : ''}`;
+    const tagsHtml = (item.tags || []).map(t => `<span class="matrix-tag">${escapeHtml(t)}</span>`).join('');
 
     card.innerHTML = `
-      <div class="thumb-holder" id="holder-${cardPlayerId}">
-        <!-- Thumbnail View -->
-        <div class="thumb-cover" id="cover-${cardPlayerId}" onclick="playInline('${cardPlayerId}', '${work.id}', '${work.aspect}')" title="Play Video Inline">
-          <img class="thumb-image" src="${work.thumbnail}" alt="${escapeAttr(work.title)}" loading="lazy">
-          <div class="play-action-overlay">
-            <div class="play-circle">
-              <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-            </div>
-          </div>
-          <div class="aspect-badge">
-            <span>${isShort ? '📱 REEL' : '🎬 16:9'}</span>
-          </div>
+      <div class="matrix-thumb-holder">
+        <img class="matrix-thumb-img" src="${item.thumbnail}" alt="${escapeAttr(item.title)}" loading="lazy">
+        <div class="matrix-aspect-badge">${isShort ? '9:16 REEL' : '16:9 CINEMA'}</div>
+        <div class="matrix-action-layer">
+          <button type="button" class="matrix-play-btn" onclick="openTheater('${item.id}', '${escapeAttr(item.title)}', '${item.aspect}', '${escapeAttr(item.client)}', '${item.youtubeUrl}')" data-cursor="PLAY">
+            ▶ Play Video
+          </button>
         </div>
-
-        <!-- Video Container -->
-        <div class="inline-video-wrap" id="wrap-${cardPlayerId}" style="display: none;"></div>
-
-        <!-- Quick Theater Expand Button -->
-        <button class="expand-card-btn" onclick="openPlayer('${work.id}', '${escapeAttr(work.title)}', '${work.aspect}')" title="Watch Fullscreen / Theater Mode">
-          ⛶ Expand
-        </button>
       </div>
-
-      <div class="work-info">
-        <div class="playing-indicator-pill">
-          <span class="sound-wave"><span></span><span></span><span></span></span>
-          <span>Now Playing</span>
+      <div class="matrix-card-info">
+        <span class="matrix-category">${escapeHtml(item.category)}</span>
+        <h3 class="matrix-card-title">${escapeHtml(item.title)}</h3>
+        <p class="matrix-card-desc">${escapeHtml(item.description)}</p>
+        <div class="matrix-tags-row">
+          ${tagsHtml}
         </div>
-        <span class="work-category-tag">${work.category}</span>
-        <h3 class="work-title">${escapeHtml(work.title)}</h3>
-        <p class="work-desc">${escapeHtml(work.description)}</p>
-        <div class="work-meta">
-          <span class="work-client">👤 ${escapeHtml(work.client)}</span>
-          <div class="card-action-links">
-            <button class="inline-play-text-btn" onclick="playInline('${cardPlayerId}', '${work.id}', '${work.aspect}')">
-              ▶ Play Inline
-            </button>
-            <a class="watch-yt-btn" href="${work.youtubeUrl}" target="_blank" rel="noopener noreferrer">
-              YouTube ↗
-            </a>
-          </div>
+        <div class="matrix-card-bottom">
+          <span class="matrix-client">Client: ${escapeHtml(item.client)}</span>
+          <a class="matrix-yt-link" href="${item.youtubeUrl}" target="_blank" rel="noopener noreferrer" data-cursor="YT">
+            YouTube ↗
+          </a>
         </div>
       </div>
     `;
-
-    grid.appendChild(card);
+    matrixGrid.appendChild(card);
   });
+
+  bindCursorListeners();
 }
 
 /**
- * Play a video inline inside the card
+ * =========================================================================
+ * 3. PAGE 3: INTERACTIVE PROJECT INQUIRY LAB ENGINE
+ * =========================================================================
  */
-window.playInline = function(cardPlayerId, videoId, aspect) {
-  const holder = document.getElementById(`holder-${cardPlayerId}`);
-  const cover = document.getElementById(`cover-${cardPlayerId}`);
-  const wrap = document.getElementById(`wrap-${cardPlayerId}`);
-  if (!holder || !cover || !wrap) return;
-
-  pauseAllOtherVideos(cardPlayerId);
-
-  cover.style.display = 'none';
-  wrap.style.display = 'block';
-
-  if (!wrap.querySelector('iframe')) {
-    wrap.innerHTML = `
-      <iframe 
-        id="${cardPlayerId}"
-        class="inline-iframe"
-        src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&modestbranding=1"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
-    `;
-  } else {
-    const iframe = wrap.querySelector('iframe');
-    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-  }
-
-  const card = holder.closest('.work-card');
-  if (card) card.classList.add('is-playing');
-};
-
-/**
- * Video Player Modal (Theater Mode)
- */
-window.openPlayer = function(videoId, title, aspect) {
-  if (!modal || !modalIframe) return;
-
-  pauseAllOtherVideos('modalIframe');
-  modalVideoTitle.textContent = title;
+function setupInquiryLabPage() {
+  let selectedFormat = 'YouTube 4K Long-Form';
+  let selectedSpeed = 'Standard Production (4-6 Days)';
   
-  if (aspect === '9:16') {
-    modalBox.classList.add('vertical-mode');
-  } else {
-    modalBox.classList.remove('vertical-mode');
+  const deliverableChips = document.getElementById('deliverableChips');
+  const speedChips = document.getElementById('speedChips');
+  const briefPreview = document.getElementById('briefPreview');
+  const clientNameInput = document.getElementById('clientNameInput');
+  const clientRefInput = document.getElementById('clientRefInput');
+  const sendWhatsappBtn = document.getElementById('sendWhatsappBtn');
+  const sendEmailBtn = document.getElementById('sendEmailBtn');
+  const studioClock = document.getElementById('studioClock');
+
+  function updateBrief() {
+    if (!briefPreview) return;
+    const clientName = clientNameInput ? clientNameInput.value.trim() || 'Creative Partner' : 'Creative Partner';
+    const clientRef = clientRefInput ? clientRefInput.value.trim() : '';
+
+    const selectedAddons = [];
+    document.querySelectorAll('.lab-addon-checkbox:checked').forEach(cb => {
+      selectedAddons.push(`• ${cb.value}`);
+    });
+
+    const brief = [
+      `PROJECT CONFIGURATION // AFNAN P.C STUDIO`,
+      `Client / Brand: ${clientName}`,
+      `Deliverable: ${selectedFormat}`,
+      `Timeline: ${selectedSpeed}`,
+      `Key Add-ons:\n${selectedAddons.length > 0 ? selectedAddons.join('\n') : '• Core Post-Production Assembly'}`,
+      clientRef ? `Reference / Raw Footage: ${clientRef}` : null
+    ].filter(Boolean).join('\n\n');
+
+    briefPreview.textContent = brief;
+    return brief;
   }
 
-  modalIframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&modestbranding=1`;
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-};
-
-function closePlayer() {
-  if (!modal || !modalIframe) return;
-  modal.classList.remove('active');
-  modalIframe.src = '';
-  document.body.style.overflow = '';
-  currentActivePlayerId = null;
-}
-
-// Event Listeners
-function setupEventListeners() {
-  filterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      pauseAllOtherVideos(null);
-      filterButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentFilter = btn.dataset.filter;
-      renderWorks(currentFilter);
+  // Chip selection listeners
+  if (deliverableChips) {
+    deliverableChips.querySelectorAll('.lab-chip-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        deliverableChips.querySelectorAll('.lab-chip-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedFormat = btn.getAttribute('data-value') || 'YouTube 4K Long-Form';
+        updateBrief();
+      });
     });
+  }
+
+  if (speedChips) {
+    speedChips.querySelectorAll('.lab-chip-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        speedChips.querySelectorAll('.lab-chip-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedSpeed = btn.getAttribute('data-value') || 'Standard Production';
+        updateBrief();
+      });
+    });
+  }
+
+  // Add-on and input listeners
+  document.querySelectorAll('.lab-addon-checkbox').forEach(cb => {
+    cb.addEventListener('change', updateBrief);
   });
 
-  if (modalCloseBtn) modalCloseBtn.addEventListener('click', closePlayer);
-  if (modal) {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closePlayer();
+  if (clientNameInput) clientNameInput.addEventListener('input', updateBrief);
+  if (clientRefInput) clientRefInput.addEventListener('input', updateBrief);
+
+  // Dispatch Actions
+  if (sendWhatsappBtn) {
+    sendWhatsappBtn.addEventListener('click', () => {
+      const briefText = updateBrief();
+      const waUrl = `https://wa.me/919037747079?text=${encodeURIComponent(briefText)}`;
+      window.open(waUrl, '_blank');
     });
   }
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
-      closePlayer();
+  if (sendEmailBtn) {
+    sendEmailBtn.addEventListener('click', () => {
+      const briefText = updateBrief();
+      const mailtoUrl = `mailto:afnanpc3@gmail.com?subject=Project%20Inquiry%20-%20${encodeURIComponent(selectedFormat)}&body=${encodeURIComponent(briefText)}`;
+      window.location.href = mailtoUrl;
+    });
+  }
+
+  // Live Studio Clock (Asia/Kolkata UTC+5:30)
+  function updateClock() {
+    if (!studioClock) return;
+    const now = new Date();
+    const options = {
+      timeZone: 'Asia/Kolkata',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    };
+    studioClock.textContent = new Intl.DateTimeFormat('en-US', options).format(now);
+  }
+
+  updateClock();
+  setInterval(updateClock, 1000);
+  updateBrief();
+}
+
+/**
+ * =========================================================================
+ * 4. UNIVERSAL THEATER VIDEO MODAL
+ * =========================================================================
+ */
+window.openTheater = function(videoId, title, aspect, client, youtubeUrl) {
+  if (!theaterModal || !theaterIframe) return;
+
+  if (theaterTitle) theaterTitle.textContent = title || 'Project Preview';
+  if (theaterAspectTag) {
+    theaterAspectTag.textContent = aspect === '9:16' ? '9:16 REEL / SHORT' : '16:9 CINEMA';
+  }
+  if (theaterClientInfo) {
+    theaterClientInfo.textContent = `Client: ${client || 'Afnan P.C'}`;
+  }
+  if (theaterYtLink) {
+    theaterYtLink.href = youtubeUrl || `https://youtu.be/${videoId}`;
+  }
+  if (theaterWaBtn) {
+    theaterWaBtn.href = `contact.html`;
+  }
+
+  if (aspect === '9:16') {
+    theaterWindow.classList.add('is-vertical');
+  } else {
+    theaterWindow.classList.remove('is-vertical');
+  }
+
+  theaterIframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0&modestbranding=1`;
+  theaterModal.classList.add('is-active');
+  body.classList.add('no-scroll');
+};
+
+function closeTheater() {
+  if (!theaterModal || !theaterIframe) return;
+  theaterModal.classList.remove('is-active');
+  theaterIframe.src = '';
+  body.classList.remove('no-scroll');
+}
+
+/**
+ * =========================================================================
+ * 5. FLUID MAGNETIC CURSOR
+ * =========================================================================
+ */
+function setupCursor() {
+  if (!customCursor) return;
+
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let circleX = mouseX;
+  let circleY = mouseY;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (cursorDot) {
+      cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
     }
   });
 
-  if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('clientName')?.value || 'Client';
-      const projectType = document.getElementById('projectType')?.value || 'Video Editing';
-      const details = document.getElementById('projectDetails')?.value || '';
+  function renderCursorPhysics() {
+    circleX += (mouseX - circleX) * 0.18;
+    circleY += (mouseY - circleY) * 0.18;
 
-      const messageText = `Hi Afnan, I saw your portfolio! My name is ${name}. I need help with ${projectType}. Details: ${details}`;
-      const whatsappUrl = `https://wa.me/919037747079?text=${encodeURIComponent(messageText)}`;
-      window.open(whatsappUrl, '_blank');
-    });
+    if (cursorCircle) {
+      cursorCircle.style.transform = `translate(${circleX}px, ${circleY}px) translate(-50%, -50%)`;
+    }
+
+    requestAnimationFrame(renderCursorPhysics);
   }
 
-  const mobileToggle = document.getElementById('mobileMenuBtn');
-  const navLinks = document.getElementById('navLinks');
-  if (mobileToggle && navLinks) {
-    mobileToggle.addEventListener('click', () => {
-      if (navLinks.style.display === 'flex') {
-        navLinks.style.display = 'none';
-      } else {
-        navLinks.style.display = 'flex';
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'absolute';
-        navLinks.style.top = '76px';
-        navLinks.style.left = '0';
-        navLinks.style.right = '0';
-        navLinks.style.background = '#0a0a0c';
-        navLinks.style.padding = '20px';
-        navLinks.style.borderBottom = '1px solid #272732';
+  requestAnimationFrame(renderCursorPhysics);
+  bindCursorListeners();
+}
+
+function bindCursorListeners() {
+  if (!customCursor) return;
+
+  document.querySelectorAll('[data-cursor]').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      const label = el.getAttribute('data-cursor') || 'VIEW';
+      if (cursorText) cursorText.textContent = label;
+      customCursor.classList.add('is-hovering');
+    });
+
+    el.addEventListener('mouseleave', () => {
+      customCursor.classList.remove('is-hovering');
+    });
+  });
+}
+
+/**
+ * =========================================================================
+ * 6. AMBIENT CANVAS
+ * =========================================================================
+ */
+function setupAmbientCanvas() {
+  const canvas = document.getElementById('ambientCanvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let particles = [];
+  let mouse = { x: -1000, y: -1000 };
+
+  function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+    particles = [];
+    const count = Math.min(45, Math.floor(width / 35));
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        radius: Math.random() * 1.5 + 0.5,
+        alpha: Math.random() * 0.4 + 0.1
+      });
+    }
+  }
+
+  window.addEventListener('resize', resize);
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  resize();
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    const radial = ctx.createRadialGradient(
+      mouse.x > 0 ? mouse.x : width / 2, 
+      mouse.y > 0 ? mouse.y : height / 3, 
+      10, 
+      width / 2, 
+      height / 2, 
+      width * 0.6
+    );
+    radial.addColorStop(0, 'rgba(56, 189, 248, 0.04)');
+    radial.addColorStop(0.5, 'rgba(255, 51, 68, 0.02)');
+    radial.addColorStop(1, 'rgba(0, 3, 31, 0)');
+    ctx.fillStyle = radial;
+    ctx.fillRect(0, 0, width, height);
+
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < 0) p.x = width;
+      if (p.x > width) p.x = 0;
+      if (p.y < 0) p.y = height;
+      if (p.y > height) p.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
+}
+
+/**
+ * =========================================================================
+ * 7. GLOBAL LISTENERS (Modal, Email Copy, ESC)
+ * =========================================================================
+ */
+function setupGlobalListeners() {
+  if (theaterCloseBtn) theaterCloseBtn.addEventListener('click', closeTheater);
+  if (theaterBackdrop) theaterBackdrop.addEventListener('click', closeTheater);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (theaterModal && theaterModal.classList.contains('is-active')) {
+        closeTheater();
+      } else if (isBackMode && typeof setBackMode === 'function') {
+        setBackMode(false);
       }
+    }
+  });
+
+  const copyAction = (btn) => {
+    const email = btn.getAttribute('data-email') || 'afnanpc3@gmail.com';
+    navigator.clipboard.writeText(email).then(() => {
+      if (copyToast) {
+        copyToast.classList.add('active');
+        setTimeout(() => {
+          copyToast.classList.remove('active');
+        }, 2200);
+      }
+    }).catch(() => {
+      window.location.href = `mailto:${email}`;
     });
-  }
+  };
+
+  if (copyEmailBtn) copyEmailBtn.addEventListener('click', () => copyAction(copyEmailBtn));
+  if (footerEmailBtn) footerEmailBtn.addEventListener('click', () => copyAction(footerEmailBtn));
 }
 
 function escapeHtml(text) {

@@ -38,54 +38,56 @@ $baseDir = (Get-Item -Path ".").FullName
 
 try {
     while ($listener.IsListening) {
-        $context = $listener.GetContext()
-        $request = $context.Request
-        $response = $context.Response
+        try {
+            $context = $listener.GetContext()
+            $request = $context.Request
+            $response = $context.Response
 
-        $rawPath = $request.Url.LocalPath
-        $urlPath = [System.Uri]::UnescapeDataString($rawPath)
-        if ($urlPath -eq "/" -or [string]::IsNullOrWhiteSpace($urlPath)) {
-            $urlPath = "/index.html"
-        }
+            $rawPath = $request.Url.LocalPath
+            $urlPath = [System.Uri]::UnescapeDataString($rawPath)
+            if ($urlPath -eq "/" -or [string]::IsNullOrWhiteSpace($urlPath)) {
+                $urlPath = "/index.html"
+            }
 
-        # Normalize relative path
-        $cleanPath = $urlPath.TrimStart("/\").Replace("/", [System.IO.Path]::DirectorySeparatorChar)
-        $fullPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($baseDir, $cleanPath))
+            # Normalize relative path
+            $cleanPath = $urlPath.TrimStart("/\").Replace("/", [System.IO.Path]::DirectorySeparatorChar)
+            $fullPath = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($baseDir, $cleanPath))
 
-        # Security check: directory traversal
-        if (-not $fullPath.StartsWith($baseDir, [System.StringComparison]::OrdinalIgnoreCase)) {
-            $response.StatusCode = 403
-            $bytes = [System.Text.Encoding]::UTF8.GetBytes("403 Forbidden")
-            $response.ContentLength64 = $bytes.Length
-            $response.OutputStream.Write($bytes, 0, $bytes.Length)
-            $response.OutputStream.Close()
-            continue
-        }
+            # Security check: directory traversal
+            if (-not $fullPath.StartsWith($baseDir, [System.StringComparison]::OrdinalIgnoreCase)) {
+                $response.StatusCode = 403
+                $bytes = [System.Text.Encoding]::UTF8.GetBytes("403 Forbidden")
+                $response.ContentLength64 = $bytes.Length
+                $response.OutputStream.Write($bytes, 0, $bytes.Length)
+                $response.OutputStream.Close()
+                continue
+            }
 
-        if (Test-Path -Path $fullPath -PathType Leaf) {
-            $ext = [System.IO.Path]::GetExtension($fullPath).ToLower()
-            $contentType = if ($mimeTypes.ContainsKey($ext)) { $mimeTypes[$ext] } else { "application/octet-stream" }
-            $response.ContentType = $contentType
-            $response.Headers.Add("Access-Control-Allow-Origin", "*")
-            $response.Headers.Add("Cache-Control", "no-cache, no-store, must-revalidate")
+            if (Test-Path -Path $fullPath -PathType Leaf) {
+                $ext = [System.IO.Path]::GetExtension($fullPath).ToLower()
+                $contentType = if ($mimeTypes.ContainsKey($ext)) { $mimeTypes[$ext] } else { "application/octet-stream" }
+                $response.ContentType = $contentType
+                $response.Headers.Add("Access-Control-Allow-Origin", "*")
+                $response.Headers.Add("Cache-Control", "no-cache, no-store, must-revalidate")
 
-            try {
                 $fileBytes = [System.IO.File]::ReadAllBytes($fullPath)
                 $response.ContentLength64 = $fileBytes.Length
-                $response.OutputStream.Write($fileBytes, 0, $fileBytes.Length)
-            } catch {
-                $response.StatusCode = 500
-                $bytes = [System.Text.Encoding]::UTF8.GetBytes("500 Internal Server Error")
-                $response.OutputStream.Write($bytes, 0, $bytes.Length)
+                if ($request.HttpMethod -ne "HEAD") {
+                    $response.OutputStream.Write($fileBytes, 0, $fileBytes.Length)
+                }
+            } else {
+                $response.StatusCode = 404
+                $bytes = [System.Text.Encoding]::UTF8.GetBytes("404 Not Found: $urlPath")
+                $response.ContentLength64 = $bytes.Length
+                if ($request.HttpMethod -ne "HEAD") {
+                    $response.OutputStream.Write($bytes, 0, $bytes.Length)
+                }
             }
-        } else {
-            $response.StatusCode = 404
-            $bytes = [System.Text.Encoding]::UTF8.GetBytes("404 Not Found: $urlPath")
-            $response.ContentLength64 = $bytes.Length
-            $response.OutputStream.Write($bytes, 0, $bytes.Length)
-        }
 
-        $response.OutputStream.Close()
+            $response.OutputStream.Close()
+        } catch {
+            # Ignore client disconnect errors in loop
+        }
     }
 } finally {
     $listener.Stop()

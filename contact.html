@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" class="is-loading">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Inquiry Lab & Contact — Afnan P.C | Video Editor & Motion Designer</title>
+  <meta name="title" content="Inquiry Lab & Contact — Afnan P.C | Video Editor & Motion Designer">
+  <meta name="description" content="Configure your video editing project scope, estimate timelines, and dispatch instant briefs directly to Afnan P.C.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body tabindex="-1">
+
+  <!-- Custom Fluid Cursor -->
+  <div class="custom-cursor" id="customCursor">
+    <div class="cursor-dot"></div>
+    <div class="cursor-circle">
+      <span class="cursor-text" id="cursorText"></span>
+    </div>
+  </div>
+
+  <!-- Interactive Background Canvas -->
+  <canvas id="ambientCanvas" class="ambient-canvas" aria-hidden="true"></canvas>
+
+  <!-- Circular SVG Loader -->
+  <div class="loader-overlay" id="loaderOverlay">
+    <div class="loader-box">
+      <div class="loader-icon-wrap">
+        <svg viewBox="-2 -2 104 104" class="loader-svg" aria-hidden="true">
+          <mask id="loaderMask">
+            <rect x="-2" y="-2" width="104" height="104" fill="#ffffff"></rect>
+            <circle class="loader-mask-circle" id="loaderMaskCircle" cx="50" cy="50" r="50" fill="#000000"></circle>
+          </mask>
+          <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2"></circle>
+          <circle cx="50" cy="50" r="50" fill="#ffffff" mask="url(#loaderMask)"></circle>
+        </svg>
+      </div>
+      <div class="loader-counter">
+        <span id="loaderPercent">0</span>%
+      </div>
+      <div class="loader-tag">Afnan P.C • Loading Inquiry Lab</div>
+    </div>
+  </div>
+
+  <!-- Header Navigation -->
+  <header class="top-nav">
+    <a href="index.html" class="logo-link" data-cursor="HOME">
+      <span class="logo-name">Afnan P.C</span>
+      <span class="logo-subtitle">Post-Production</span>
+    </a>
+
+    <div class="nav-right">
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link" data-cursor="WORKS">Works (16)</a>
+        <span class="nav-divider">,</span>
+        <a href="info.html" class="nav-link" data-cursor="INFO">Info & Pipeline</a>
+        <span class="nav-divider">,</span>
+        <a href="contact.html" class="nav-link current" data-cursor="LAB">Inquiry Lab</a>
+        <span class="nav-divider">,</span>
+        <button type="button" class="nav-link" id="copyEmailBtn" data-email="afnanpc3@gmail.com" data-cursor="COPY">
+          Contact
+        </button>
+        <span class="copy-toast" id="copyToast" aria-hidden="true">Email copied!</span>
+      </nav>
+
+      <a href="index.html#matrix" class="mode-toggle-btn" title="Jump to Matrix View on Home" data-cursor="MATRIX">
+        <div class="toggle-icon-frame">
+          <span class="toggle-shape shape-circle"></span>
+          <span class="toggle-shape shape-square"></span>
+        </div>
+        <span class="toggle-label-text">Matrix</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Contact & Lab Content -->
+  <main class="contact-page-container">
+    
+    <div class="contact-hero-header">
+      <span class="section-tag-label">// INTERACTIVE SCOPE CONFIGURATOR</span>
+      <h1 class="info-display-title">PROJECT<br>INQUIRY LAB</h1>
+      <p class="info-body-text" style="max-width: 580px;">
+        Select your project parameters below to generate a tailored brief and initiate an instant direct collaboration via WhatsApp or Email.
+      </p>
+    </div>
+
+    <div class="contact-layout-grid">
+      
+      <!-- Interactive Project Lab Builder -->
+      <div class="project-lab-card">
+        <h2 class="lab-title">CONFIGURE DELIVERABLE</h2>
+        <p class="lab-subtitle">Step-by-step project scope builder</p>
+
+        <!-- 1. Deliverable Type -->
+        <div class="lab-field-group">
+          <label class="lab-field-label">1. Select Deliverable Format</label>
+          <div class="lab-chips-grid" id="deliverableChips">
+            <button type="button" class="lab-chip-btn selected" data-value="YouTube 4K Long-Form" data-cursor="SELECT">YouTube 4K (16:9)</button>
+            <button type="button" class="lab-chip-btn" data-value="Instagram Reels / Shorts (Batch)" data-cursor="SELECT">Reels / Shorts (9:16)</button>
+            <button type="button" class="lab-chip-btn" data-value="Commercial / Brand Promo Ad" data-cursor="SELECT">Commercial Promo</button>
+            <button type="button" class="lab-chip-btn" data-value="Documentary & Narrative Story" data-cursor="SELECT">Documentary Cut</button>
+            <button type="button" class="lab-chip-btn" data-value="Motion Graphics & 2D VFX" data-cursor="SELECT">Motion Graphics</button>
+          </div>
+        </div>
+
+        <!-- 2. Turnaround Speed -->
+        <div class="lab-field-group">
+          <label class="lab-field-label">2. Production Timeline</label>
+          <div class="lab-chips-grid" id="speedChips">
+            <button type="button" class="lab-chip-btn selected" data-value="Standard Production (4-6 Days)" data-cursor="SELECT">Standard (4-6 Days)</button>
+            <button type="button" class="lab-chip-btn" data-value="Express Turnaround (48 Hours)" data-cursor="SELECT">Express (48 Hours)</button>
+            <button type="button" class="lab-chip-btn" data-value="Urgent Rush (24 Hours)" data-cursor="SELECT">Rush (24 Hours)</button>
+          </div>
+        </div>
+
+        <!-- 3. Add-on Enhancements -->
+        <div class="lab-field-group">
+          <label class="lab-field-label">3. Production Add-ons</label>
+          
+          <label class="lab-addon-box">
+            <input type="checkbox" class="lab-addon-checkbox" value="Layered Sound Design & Beat Sync" checked>
+            <div>
+              <div class="lab-addon-title">Layered Sound Design & SFX Beat Sync</div>
+              <div class="lab-addon-desc">Impact hits, risers, custom foley textures, and stereo EQ mix.</div>
+            </div>
+          </label>
+
+          <label class="lab-addon-box">
+            <input type="checkbox" class="lab-addon-checkbox" value="Kinetic Typography & Motion Lower Thirds" checked>
+            <div>
+              <div class="lab-addon-title">Kinetic Typography & Motion Lower-Thirds</div>
+              <div class="lab-addon-desc">Animated captions, graphic stickers, and brand title overlays.</div>
+            </div>
+          </label>
+
+          <label class="lab-addon-box">
+            <input type="checkbox" class="lab-addon-checkbox" value="DaVinci Resolve Filmic Color Grade" checked>
+            <div>
+              <div class="lab-addon-title">DaVinci Resolve Filmic Color Grade</div>
+              <div class="lab-addon-desc">Custom LUT application, skin tone protection, and HDR polish.</div>
+            </div>
+          </label>
+
+          <label class="lab-addon-box">
+            <input type="checkbox" class="lab-addon-checkbox" value="4K Master ProRes + Premiere Project Files">
+            <div>
+              <div class="lab-addon-title">ProRes 4K Master + Raw Project Files</div>
+              <div class="lab-addon-desc">Uncompressed delivery and organized project timeline archive.</div>
+            </div>
+          </label>
+        </div>
+
+        <!-- 4. Client Information -->
+        <div class="lab-field-group">
+          <label class="lab-field-label">4. Your Details</label>
+          <div class="form-row">
+            <input type="text" id="clientNameInput" placeholder="Your Name or Brand" class="info-input" value="Creative Partner">
+            <input type="text" id="clientRefInput" placeholder="Footage Link / Reference URL (optional)" class="info-input">
+          </div>
+        </div>
+
+        <!-- Live Generated Brief -->
+        <div class="lab-live-brief">
+          <span class="brief-tag">// LIVE GENERATED PROJECT BRIEF</span>
+          <div class="brief-text-preview" id="briefPreview">Loading brief preview...</div>
+        </div>
+
+        <!-- Actions -->
+        <div class="lab-actions-row">
+          <button type="button" class="btn-editorial" id="sendWhatsappBtn" data-cursor="DISPATCH" style="flex: 1; justify-content: center;">
+            <span>🚀 Dispatch to WhatsApp</span>
+          </button>
+          <button type="button" class="btn-editorial-ghost" id="sendEmailBtn" data-cursor="MAIL" style="flex: 1; justify-content: center;">
+            <span>✉️ Send via Email</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Studio Clock & Direct Channels Sidebar -->
+      <aside class="contact-sidebar">
+        
+        <!-- Live Studio Timezone Card -->
+        <div class="studio-clock-card">
+          <span class="meta-label">
+            <span class="clock-status-dot"></span> Studio Status: Online
+          </span>
+          <div class="clock-time-display" id="studioClock">--:--:--</div>
+          <div class="clock-zone-name">Kerala, India (Asia/Kolkata • UTC+5:30)</div>
+          <div class="clock-zone-name" style="color: var(--accent-green); margin-top: 6px;">⚡ Accepting New Projects</div>
+        </div>
+
+        <!-- Direct Channels Card -->
+        <div class="direct-channels-card">
+          <span class="meta-label">// DIRECT CHANNELS</span>
+          
+          <a href="https://wa.me/919037747079?text=Hi%20Afnan,%20I%20want%20to%20discuss%20a%20video%20project" target="_blank" rel="noopener noreferrer" class="direct-channel-item" data-cursor="CHAT">
+            <div class="channel-icon-label">
+              <span>💬</span>
+              <span>WhatsApp Direct</span>
+            </div>
+            <span class="channel-val">+91 9037747079 ↗</span>
+          </a>
+
+          <a href="mailto:afnanpc3@gmail.com" class="direct-channel-item" data-cursor="EMAIL">
+            <div class="channel-icon-label">
+              <span>✉️</span>
+              <span>Email Inbox</span>
+            </div>
+            <span class="channel-val">afnanpc3@gmail.com ↗</span>
+          </a>
+
+          <a href="tel:+919037747079" class="direct-channel-item" data-cursor="CALL">
+            <div class="channel-icon-label">
+              <span>📞</span>
+              <span>Phone Call</span>
+            </div>
+            <span class="channel-val">+91 9037747079</span>
+          </a>
+
+          <div class="direct-channel-item" style="cursor: default;">
+            <div class="channel-icon-label">
+              <span>📍</span>
+              <span>Location</span>
+            </div>
+            <span class="channel-val">Worldwide Remote</span>
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="global-footer">
+    <div class="footer-meta-block">
+      <span class="meta-label">Direct Contact</span>
+      <button type="button" class="meta-val-btn" id="footerEmailBtn" data-email="afnanpc3@gmail.com" data-cursor="COPY">
+        afnanpc3@gmail.com
+      </button>
+    </div>
+
+    <div class="footer-meta-block">
+      <span class="meta-label">Availability</span>
+      <span class="meta-val-text">Open for Projects • October 2026</span>
+    </div>
+
+    <div class="footer-meta-block">
+      <span class="meta-label">Timezone</span>
+      <span class="meta-val-text">Kerala, India (UTC+5:30)</span>
+    </div>
+
+    <div class="footer-meta-block copyright-block">
+      <span class="meta-label">Colophon</span>
+      <span class="meta-val-text">© 2026 Afnan P.C</span>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

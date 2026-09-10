@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" class="is-loading">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Info & Workflow — Afnan P.C | Video Editor & Motion Designer</title>
+  <meta name="title" content="Info & Workflow — Afnan P.C | Video Editor & Motion Designer">
+  <meta name="description" content="Discover Afnan P.C's 4-stage post-production pipeline, creative editing philosophy, and software suite.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body tabindex="-1">
+
+  <!-- Custom Fluid Cursor -->
+  <div class="custom-cursor" id="customCursor">
+    <div class="cursor-dot"></div>
+    <div class="cursor-circle">
+      <span class="cursor-text" id="cursorText"></span>
+    </div>
+  </div>
+
+  <!-- Interactive Background Canvas -->
+  <canvas id="ambientCanvas" class="ambient-canvas" aria-hidden="true"></canvas>
+
+  <!-- Circular SVG Loader -->
+  <div class="loader-overlay" id="loaderOverlay">
+    <div class="loader-box">
+      <div class="loader-icon-wrap">
+        <svg viewBox="-2 -2 104 104" class="loader-svg" aria-hidden="true">
+          <mask id="loaderMask">
+            <rect x="-2" y="-2" width="104" height="104" fill="#ffffff"></rect>
+            <circle class="loader-mask-circle" id="loaderMaskCircle" cx="50" cy="50" r="50" fill="#000000"></circle>
+          </mask>
+          <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2"></circle>
+          <circle cx="50" cy="50" r="50" fill="#ffffff" mask="url(#loaderMask)"></circle>
+        </svg>
+      </div>
+      <div class="loader-counter">
+        <span id="loaderPercent">0</span>%
+      </div>
+      <div class="loader-tag">Afnan P.C • Loading Info</div>
+    </div>
+  </div>
+
+  <!-- Header Navigation -->
+  <header class="top-nav">
+    <a href="index.html" class="logo-link" data-cursor="HOME">
+      <span class="logo-name">Afnan P.C</span>
+      <span class="logo-subtitle">Post-Production</span>
+    </a>
+
+    <div class="nav-right">
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link" data-cursor="WORKS">Works (16)</a>
+        <span class="nav-divider">,</span>
+        <a href="info.html" class="nav-link current" data-cursor="INFO">Info & Pipeline</a>
+        <span class="nav-divider">,</span>
+        <a href="contact.html" class="nav-link" data-cursor="LAB">Inquiry Lab</a>
+        <span class="nav-divider">,</span>
+        <button type="button" class="nav-link" id="copyEmailBtn" data-email="afnanpc3@gmail.com" data-cursor="COPY">
+          Contact
+        </button>
+        <span class="copy-toast" id="copyToast" aria-hidden="true">Email copied!</span>
+      </nav>
+
+      <a href="index.html#matrix" class="mode-toggle-btn" title="Jump to Matrix View on Home" data-cursor="MATRIX">
+        <div class="toggle-icon-frame">
+          <span class="toggle-shape shape-circle"></span>
+          <span class="toggle-shape shape-square"></span>
+        </div>
+        <span class="toggle-label-text">Matrix</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Info Content -->
+  <main class="info-page-container">
+    
+    <!-- Hero Editorial Grid -->
+    <div class="info-hero-grid">
+      <div class="info-hero-text">
+        <span class="section-tag-label">// POST-PRODUCTION SPECIALIST</span>
+        <h1 class="info-display-title">PHILOSOPHY<br>& CRAFT</h1>
+        <p class="info-lead-bio">
+          Video editing is not just stringing footage together—it is the subtle art of emotional rhythm, psychological tension, and sound architecture.
+        </p>
+        <p class="info-body-text">
+          Based in Kerala, India and working with brands, creators, and agencies worldwide, I combine technical mastery across Premiere Pro, After Effects, and DaVinci Resolve with an obsession for high retention and cinematic pacing.
+        </p>
+        <p class="info-body-text">
+          Whether delivering high-stakes commercial teasers, documentary narratives with archival restoration, or viral vertical reels engineered for scroll-stopping watch time, every project is crafted to command attention from the very first frame.
+        </p>
+
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="contact.html" class="btn-editorial" data-cursor="START">
+            <span>Configure Project in Lab ⚡</span>
+          </a>
+          <a href="https://wa.me/919037747079?text=Hi%20Afnan,%20I%20read%20your%20info%20page%20and%20want%20to%20collaborate" target="_blank" rel="noopener noreferrer" class="btn-editorial-ghost" data-cursor="CHAT">
+            <span>WhatsApp Afnan ↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Creator Hero Card -->
+      <div class="info-creator-card-hero">
+        <img src="assets/profile.png" alt="Afnan P.C Profile" class="info-avatar-large">
+        <h2 class="info-creator-name">Afnan P.C</h2>
+        <div class="info-creator-tagline">Video Editor • Motion Designer • Colorist</div>
+
+        <div class="info-stats-ribbon">
+          <div>
+            <div class="info-stat-num">16+</div>
+            <div class="info-stat-lbl">Featured Works</div>
+          </div>
+          <div>
+            <div class="info-stat-num">4K</div>
+            <div class="info-stat-lbl">Master Deliveries</div>
+          </div>
+          <div>
+            <div class="info-stat-num">100%</div>
+            <div class="info-stat-lbl">Retention Focus</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The 4-Stage Post-Production Pipeline -->
+    <section class="pipeline-section">
+      <span class="section-tag-label">// THE 4-STAGE PIPELINE</span>
+      <h2 class="section-massive-title">HOW PROJECTS COME TO LIFE</h2>
+
+      <div class="pipeline-grid">
+        <div class="pipeline-card" data-cursor="STEP 1">
+          <span class="pipeline-step-badge">01 // INGEST & PACING</span>
+          <h3>Narrative Assembly</h3>
+          <p>
+            Footage organization, multicam synchronisation, dialogue tightening, and story structuring with aggressive hook placement to prevent drop-off in the first 3 seconds.
+          </p>
+        </div>
+
+        <div class="pipeline-card" data-cursor="STEP 2">
+          <span class="pipeline-step-badge">02 // MOTION & VFX</span>
+          <h3>Kinetic Graphics</h3>
+          <p>
+            Custom keyframe animation, responsive typography, logo stings, UI mockups, split-screens, and seamless speed-ramped whip transitions.
+          </p>
+        </div>
+
+        <div class="pipeline-card" data-cursor="STEP 3">
+          <span class="pipeline-step-badge">03 // FOLEY & AUDIO</span>
+          <h3>Sound Architecture</h3>
+          <p>
+            Multi-layered sound effects, low-end risers, impacts, foley textures, vocal de-noising, and precise beat-matching that brings the visual cut to life.
+          </p>
+        </div>
+
+        <div class="pipeline-card" data-cursor="STEP 4">
+          <span class="pipeline-step-badge">04 // FINISHING</span>
+          <h3>DaVinci Color Grade</h3>
+          <p>
+            Shot-matching, skin tone protection, film emulation LUTs, high dynamic range color correction, and final 4K UHD master rendering for all social platforms.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Arsenal & Software Suite -->
+    <section class="pipeline-section">
+      <span class="section-tag-label">// SOFTWARE & HARDWARE ARSENAL</span>
+      <h2 class="section-massive-title">PRODUCTION TOOLKIT</h2>
+
+      <div class="arsenal-grid">
+        <div class="arsenal-item">
+          <div class="arsenal-top">
+            <span class="arsenal-name">Adobe Premiere Pro</span>
+            <span class="arsenal-badge">PRIMARY NLE</span>
+          </div>
+          <p class="arsenal-desc">High-speed timeline editing, multicam sync, dynamic linking with After Effects, and rapid rough cut delivery.</p>
+        </div>
+
+        <div class="arsenal-item">
+          <div class="arsenal-top">
+            <span class="arsenal-name">Adobe After Effects</span>
+            <span class="arsenal-badge">VFX & MOTION</span>
+          </div>
+          <p class="arsenal-desc">Kinetic typography, motion tracking, particle simulations, glitch effects, and bespoke title packages.</p>
+        </div>
+
+        <div class="arsenal-item">
+          <div class="arsenal-top">
+            <span class="arsenal-name">DaVinci Resolve Studio</span>
+            <span class="arsenal-badge">COLOR FINISHING</span>
+          </div>
+          <p class="arsenal-desc">Node-based cinematic color correction, film stock emulation, dynamic masks, and HDR mastering.</p>
+        </div>
+
+        <div class="arsenal-item">
+          <div class="arsenal-top">
+            <span class="arsenal-name">Adobe Audition & Sound Suites</span>
+            <span class="arsenal-badge">AUDIO MASTERING</span>
+          </div>
+          <p class="arsenal-desc">Dialogue isolation, EQ curve balancing, noise reduction, and binaural sound spatialization.</p>
+        </div>
+
+        <div class="arsenal-item">
+          <div class="arsenal-top">
+            <span class="arsenal-name">Adobe Photoshop</span>
+            <span class="arsenal-badge">ASSETS & THUMBNAILS</span>
+          </div>
+          <p class="arsenal-desc">Keyframe asset preparation, visual graphic separation, and high click-through-rate YouTube thumbnail design.</p>
+        </div>
+
+        <div class="arsenal-item">
+          <div class="arsenal-top">
+            <span class="arsenal-name">High-Performance Workstation</span>
+            <span class="arsenal-badge">HARDWARE</span>
+          </div>
+          <p class="arsenal-desc">Fast GPU-accelerated 4K/6K timeline scrubbing with zero drop frames and rapid export turnaround.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="global-footer">
+    <div class="footer-meta-block">
+      <span class="meta-label">Direct Contact</span>
+      <button type="button" class="meta-val-btn" id="footerEmailBtn" data-email="afnanpc3@gmail.com" data-cursor="COPY">
+        afnanpc3@gmail.com
+      </button>
+    </div>
+
+    <div class="footer-meta-block">
+      <span class="meta-label">Availability</span>
+      <span class="meta-val-text">Open for Projects • October 2026</span>
+    </div>
+
+    <div class="footer-meta-block">
+      <span class="meta-label">Timezone</span>
+      <span class="meta-val-text">Kerala, India (UTC+5:30)</span>
+    </div>
+
+    <div class="footer-meta-block copyright-block">
+      <span class="meta-label">Colophon</span>
+      <span class="meta-val-text">© 2026 Afnan P.C</span>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
